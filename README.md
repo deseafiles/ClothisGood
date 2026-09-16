@@ -1,4 +1,4 @@
-# ClotheisGood
+# ClothisGood
 
-Your Personal Wardrobe for managing your personal clothes!
+ClothisGood adalah aplikasi mobile berbasis Flutter yang membantu pengguna menemukan inspirasi outfit berdasarkan kondisi cuaca.
 
