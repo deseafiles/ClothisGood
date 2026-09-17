@@ -1,4 +1,6 @@
 import 'package:android/constant.dart';
+import 'package:android/weather/models/weather_model.dart';
+import 'package:android/weather/services/weather_service.dart';
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -58,7 +60,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ],
       ),
       backgroundColor: Colors.white,
-
+      body: FutureBuilder<WeatherModel?>(
+      future: WeatherService().fetchWeather(52.52, 13.41), 
+      builder: (context, snapshot){
+          if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+                return Center(child: Text("Error: ${snapshot.error}" ));
+            } else if (!snapshot.hasData) {
+                return const Center(child: Text("No Weather found"));
+              } else {
+                  final weather = snapshot.data!;
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Card(
+                      elevation: 4,
+                      child: ListTile(
+                        subtitle: Text(
+                          '${weather.temperature2m[0]}%',
+                      ),
+                      ),
+                    )
+                  );
+                }
+        })
       
     );
   }
