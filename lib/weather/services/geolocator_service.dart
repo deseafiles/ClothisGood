@@ -1,9 +1,8 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 class GeolocatorService {
-  
-
-  Future<Position?> getCurrentLocation() async {
+  Future<Position?> getCurrentPosition() async {
       bool serviceEnabled;
       LocationPermission permission;
 
@@ -26,10 +25,37 @@ class GeolocatorService {
           return Future.error('Location permissions are permanently denied, cannot request.');
         }
 
-      Position position = await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy:  LocationAccuracy.high));
+      Position position = await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy:  LocationAccuracy.medium,
+      distanceFilter: 50));
 
       print('Latitude: ${position.latitude}, Longitude: ${position.longitude}');
 
       return position;
     }
+  
+  Future<String?> getCurrentLocation(Position position) async {
+    final Geocoding geocoding = Geocoding(); 
+    try {
+      final placemarks = await geocoding.placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+//       final placemarks = await geocoding.placemarkFromCoordinates(
+// -3.906889,119.533581
+//       );
+
+
+      if (placemarks.isEmpty) {
+        return null;
+      }
+
+      final place = placemarks.first;
+
+      return place.locality ?? place.subAdministrativeArea ?? 'Unknown location';
+    } catch (e) {
+      print('Failed to fetch address: $e');
+      return null;
+    }
+  }
 }

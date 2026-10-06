@@ -133,7 +133,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
               ),
 
-              // Indicator
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
@@ -146,7 +145,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
               const SizedBox(height: 28),
 
-              // Next / Get Started button
               SizedBox(
                 width: double.infinity,
                 height: 54,
@@ -174,7 +172,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
               const SizedBox(height: 16),
 
-              // Skip
               TextButton(
                 onPressed: isLastPage ? null : _skipOnboarding,
                 child: Text(
@@ -209,13 +206,13 @@ class _OnboardingContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 20,
       children: [
-        const Spacer(),
-
+        
         // Icon
         Container(
-          width: 260,
-          height: 260,
+          width: 300,
+          height: 350,
           padding: const EdgeInsets.all(30),
           decoration: BoxDecoration(
             color: AppColors.pinkLight.withValues(alpha: 0.35),
@@ -227,17 +224,19 @@ class _OnboardingContent extends StatelessWidget {
               color: AppColors.pink.withValues(alpha: 0.15),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              page.icon,
-              size: 110,
-              color: AppColors.primary,
-            ),
-          ),
+            child: Container(
+              padding: EdgeInsets.all(20),
+              child: Icon(
+                page.icon,
+                size: 110,
+                color: AppColors.primary,
+              )
+
+             ) 
+            )
         ),
 
-        const SizedBox(height: 40),
 
-        // Title
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
