@@ -4,36 +4,20 @@ import 'package:android/splash_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
-    await dotenv.load();
-    runApp(const MyApp());
-  }
+  await dotenv.load();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
-    const MyApp({super.key});
+  const MyApp({super.key});
 
-    @override
-    Widget build(BuildContext context) {
-        return MaterialApp(
-          title: 'ClothisGood',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.pink)),
-          home: OnboardingScreen(),
-        );
-      }
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'ClothisGood',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.pink)),
+      home: OnboardingScreen(),
+    );
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
