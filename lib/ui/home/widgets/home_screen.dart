@@ -5,14 +5,14 @@ import 'package:android/weather/services/weather_service.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
-class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+HomeHomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  State<HomeScreen> createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardScreenState extends State<HomeScreen> {
   late final Future<Position?> _positionFuture;
 
   Future<String?>? _addressFuture;
@@ -58,8 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           FutureBuilder<Position?>(
             future: _positionFuture,
             builder: (context, locationSnapshot) {
-              if (locationSnapshot.connectionState ==
-                  ConnectionState.waiting) {
+              if (locationSnapshot.connectionState == ConnectionState.waiting) {
                 return const Padding(
                   padding: EdgeInsets.all(12),
                   child: SizedBox(
@@ -71,22 +70,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
               }
 
               if (locationSnapshot.hasError) {
-                return const Center(
-                  child: Text('Location error'),
-                );
+                return const Center(child: Text('Location error'));
               }
 
-              if (!locationSnapshot.hasData ||
-                  locationSnapshot.data == null) {
-                return const Center(
-                  child: Text('Location not found'),
-                );
+              if (!locationSnapshot.hasData || locationSnapshot.data == null) {
+                return const Center(child: Text('Location not found'));
               }
 
               final position = locationSnapshot.data!;
 
-              _addressFuture ??=
-                  GeolocatorService().getCurrentLocation(position);
+              _addressFuture ??= GeolocatorService().getCurrentLocation(
+                position,
+              );
 
               return FutureBuilder<String?>(
                 future: _addressFuture,
@@ -106,23 +101,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   if (addressSnapshot.hasError) {
                     debugPrint('ADDRESS ERROR: ${addressSnapshot.error}');
                     debugPrint('STACK: ${addressSnapshot.stackTrace}');
-                    return const Center(
-                      child: Text('Address error'),
-                    );
+                    return const Center(child: Text('Address error'));
                   }
 
                   if (!addressSnapshot.hasData ||
                       addressSnapshot.data == null) {
-                    return const Center(
-                      child: Text('Location not found'),
-                    );
+                    return const Center(child: Text('Location not found'));
                   }
 
                   return Padding(
                     padding: const EdgeInsets.only(left: 8),
-                    child: Center(
-                      child: Text(addressSnapshot.data!),
-                    ),
+                    child: Center(child: Text(addressSnapshot.data!)),
                   );
                 },
               );
@@ -131,9 +120,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           IconButton(
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Choosing Weather.'),
-                ),
+                const SnackBar(content: Text('Choosing Weather.')),
               );
             },
             icon: const Icon(
@@ -149,21 +136,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
         future: _positionFuture,
         builder: (context, locationSnapshot) {
           if (locationSnapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (locationSnapshot.hasError) {
-            return Center(
-              child: Text('Error: ${locationSnapshot.error}'),
-            );
+            return Center(child: Text('Error: ${locationSnapshot.error}'));
           }
 
           if (!locationSnapshot.hasData || locationSnapshot.data == null) {
-            return const Center(
-              child: Text('Location not found'),
-            );
+            return const Center(child: Text('Location not found'));
           }
 
           final position = locationSnapshot.data!;
@@ -176,23 +157,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
           return FutureBuilder<WeatherModel?>(
             future: _weatherFuture,
             builder: (context, weatherSnapshot) {
-              if (weatherSnapshot.connectionState ==
-                  ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+              if (weatherSnapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
               }
 
               if (weatherSnapshot.hasError) {
-                return Center(
-                  child: Text('Error: ${weatherSnapshot.error}'),
-                );
+                return Center(child: Text('Error: ${weatherSnapshot.error}'));
               }
 
               if (!weatherSnapshot.hasData || weatherSnapshot.data == null) {
-                return const Center(
-                  child: Text('No Weather found'),
-                );
+                return const Center(child: Text('No Weather found'));
               }
 
               final weather = weatherSnapshot.data!;
@@ -201,9 +175,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Card(
                   elevation: 4,
-                  child: ListTile(
-                    title: Text('${weather.temperature2m[0]}°C'),
-                  ),
+                  child: ListTile(title: Text('${weather.temperature2m[0]}°C')),
                 ),
               );
             },
