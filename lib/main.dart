@@ -3,6 +3,7 @@ import 'package:android/ui/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:android/ui/splash/splash_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:android/routing/router.dart';
 
 Future<void> main() async {
   await dotenv.load();
@@ -14,11 +15,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'ClothisGood',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.pink)),
-      home: HomeScreen(),
+      routerConfig: router,
     );
   }
 }

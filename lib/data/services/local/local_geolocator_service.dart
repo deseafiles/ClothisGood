@@ -45,14 +45,15 @@ class GeolocatorService {
 // -3.906889,119.533581
 //       );
 
-
       if (placemarks.isEmpty) {
         return null;
       }
 
       final place = placemarks.first;
+      final location = place.subLocality
+      ?? place.locality ?? place.subAdministrativeArea ?? 'Unknown location';
 
-      return place.locality ?? place.subAdministrativeArea ?? 'Unknown location';
+      return location;
     } catch (e) {
       print('Failed to fetch address: $e');
       return null;

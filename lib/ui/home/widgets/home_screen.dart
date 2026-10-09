@@ -1,5 +1,6 @@
 import 'package:android/data/services/api/api_client.dart';
 import 'package:android/ui/home/widgets/navigation_app_bar.dart';
+import 'package:android/ui/home/widgets/weather_icon.dart';
 import 'package:android/utils/constant.dart';
 import 'package:android/domain/models/weathers/weather.dart';
 import 'package:android/data/services/local/local_geolocator_service.dart';
@@ -17,7 +18,6 @@ class HomeScreen extends StatefulWidget {
 class _DashboardScreenState extends State<HomeScreen> {
   late final Future<Position?> _positionFuture;
 
-  Future<String?>? _addressFuture;
   Future<Result<Weather>>? _weatherFuture;
 
   @override
@@ -57,23 +57,22 @@ class _DashboardScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        actions: [
-          FutureBuilder<Position?>(
+        actions: [ const WeatherIcon()
+        ],
+      ),
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          Expanded(
+            child: FutureBuilder<Position?>(
             future: _positionFuture,
             builder: (context, locationSnapshot) {
               if (locationSnapshot.connectionState == ConnectionState.waiting) {
-                return const Padding(
-                  padding: EdgeInsets.all(12),
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                );
+                return const Center(child: CircularProgressIndicator());
               }
 
               if (locationSnapshot.hasError) {
-                return const Center(child: Text('Location error'));
+                return Center(child: Text('Error: ${locationSnapshot.error}'));
               }
 
               if (!locationSnapshot.hasData || locationSnapshot.data == null) {
@@ -82,110 +81,46 @@ class _DashboardScreenState extends State<HomeScreen> {
 
               final position = locationSnapshot.data!;
 
-              _addressFuture ??= GeolocatorService().getCurrentLocation(
-                position,
+              _weatherFuture ??= ApiClient().getWeather(
+                position.latitude,
+                position.longitude,
               );
 
-              return FutureBuilder<String?>(
-                future: _addressFuture,
-                builder: (context, addressSnapshot) {
-                  if (addressSnapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return const Padding(
-                      padding: EdgeInsets.all(12),
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                    );
+              return FutureBuilder<Result<Weather>?>(
+                future: _weatherFuture,
+                builder: (context, weatherSnapshot) {
+                  if (weatherSnapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
                   }
 
-                  if (addressSnapshot.hasError) {
-                    debugPrint('ADDRESS ERROR: ${addressSnapshot.error}');
-                    debugPrint('STACK: ${addressSnapshot.stackTrace}');
-                    return const Center(child: Text('Address error'));
+                  if (weatherSnapshot.hasError) {
+                    return Center(child: Text('Error: ${weatherSnapshot.error}'));
                   }
 
-                  if (!addressSnapshot.hasData ||
-                      addressSnapshot.data == null) {
-                    return const Center(child: Text('Location not found'));
+                  if (!weatherSnapshot.hasData || weatherSnapshot.data == null) {
+                    return const Center(child: Text('No Weather found'));
                   }
+
+                  final weatherData = weatherSnapshot.data! as Ok<Weather>;
+                  final weather = weatherData.value;
 
                   return Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Center(child: Text(addressSnapshot.data!)),
+                    padding: const EdgeInsets.all(16.0),
+                    child: Card(
+                      elevation: 4,
+                      child: ListTile(title: Text('${weather.temperature2m[0]}°C')),
+                    ),
                   );
                 },
               );
             },
           ),
-          IconButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Choosing Weather.')),
-              );
-            },
-            icon: const Icon(
-              Icons.cloud_circle,
-              color: AppColors.surface,
-              size: 40,
-            ),
-          ),
-        ],
-      ),
-      backgroundColor: Colors.white,
-      body: FutureBuilder<Position?>(
-        future: _positionFuture,
-        builder: (context, locationSnapshot) {
-          if (locationSnapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (locationSnapshot.hasError) {
-            return Center(child: Text('Error: ${locationSnapshot.error}'));
-          }
-
-          if (!locationSnapshot.hasData || locationSnapshot.data == null) {
-            return const Center(child: Text('Location not found'));
-          }
-
-          final position = locationSnapshot.data!;
-
-          _weatherFuture ??= ApiClient().getWeather(
-            position.latitude,
-            position.longitude,
-          );
-
-          return FutureBuilder<Result<Weather>?>(
-            future: _weatherFuture,
-            builder: (context, weatherSnapshot) {
-              if (weatherSnapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              if (weatherSnapshot.hasError) {
-                return Center(child: Text('Error: ${weatherSnapshot.error}'));
-              }
-
-              if (!weatherSnapshot.hasData || weatherSnapshot.data == null) {
-                return const Center(child: Text('No Weather found'));
-              }
-
-              final weatherData = weatherSnapshot.data! as Ok<Weather>;
-              final weather = weatherData.value;
-
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Card(
-                  elevation: 4,
-                  child: ListTile(title: Text('${weather.temperature2m[0]}°C')),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-}
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: const WeatherIcon(),
+        )
+      ],
+    ) 
+  );
+}}
