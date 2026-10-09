@@ -1,14 +1,21 @@
-import 'package:android/weather/models/weather_model.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:android/domain/models/weathers/weather.dart';
+import 'package:android/data/services/api/model/weather/weather_api_model.dart';
+import 'package:android/utils/result.dart';
+
+typedef AuthHeaderProvider = String? Function();
 
 class ApiClient {
-  ApiClient({String? host, int? port, HttpClient Function()? clientFactory})
-    : _host = host ?? 'localhost',
-      _port = port ?? 8080,
-      _clientFactory = clientFactory ?? HttpClient.new;
+  ApiClient({
+    String? host,
+    int? port,
+    HttpClient Function()? clientFactory,
+  })  : _host = host ?? 'api.open-meteo.com',
+        _port = port ?? 443,
+        _clientFactory = clientFactory ?? HttpClient.new;
 
   final String _host;
   final int _port;
@@ -22,34 +29,59 @@ class ApiClient {
 
   Future<void> _authHeader(HttpHeaders headers) async {
     final header = _authHeaderProvider?.call();
+
     if (header != null) {
       headers.add(HttpHeaders.authorizationHeader, header);
     }
   }
 
-  Future<Result<List<Weather>>> getWeather(double lat, double long) async {
+  Future<Result<Weather>> getWeather(
+    double lat,
+    double long,
+  ) async {
     final client = _clientFactory();
-    // Isi disini
-    // WeatherModel nya itu didefine di services/api/model/weather/weather_model.dart. Saranku diganti namanya jadi Weather aja jgn WeatherModel.
-  }
-}
 
-// Ini pindah ke getWeather nnti logicnya
-class WeatherService {
-  Future<WeatherModel?> fetchWeather(double lat, double long) async {
-    final response = await http.get(
-      Uri.parse(
-        'https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$long&hourly=temperature_2m,precipitation_probability,relative_humidity_2m,rain,apparent_temperature',
-      ),
-      headers: {'Accept': 'application/json'},
-    );
-
-    if (response.statusCode == 200) {
-      return WeatherModel.fromJson(
-        jsonDecode(response.body) as Map<String, dynamic>,
+    try {
+      final request = await client.getUrl(
+        Uri(
+          scheme: 'https',
+          host: _host,
+          port: _port,
+          path: '/v1/forecast',
+          queryParameters: {
+            'latitude': '$lat',
+            'longitude': '$long',
+            'hourly': 'temperature_2m,precipitation_probability,'
+                'relative_humidity_2m,rain,apparent_temperature',
+          },
+        ),
       );
-    } else {
-      throw Exception('Failed to load weather');
+
+      request.headers.add(
+        HttpHeaders.acceptHeader,
+        'application/json',
+      );
+
+      await _authHeader(request.headers);
+
+      final response = await request.close();
+
+      if (response.statusCode == 200) {
+        final body = await response.transform(utf8.decoder).join();
+        final json = jsonDecode(body) as Map<String, dynamic>;
+
+        return Result.ok(Weather.fromJson(json));
+      }
+
+      return Result.error(
+        HttpException(
+          'Failed to load weather: ${response.statusCode}',
+        ),
+      );
+    } on Exception catch (error) {
+      return Result.error(error);
+    } finally {
+      client.close();
     }
   }
 }

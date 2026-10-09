@@ -1,6 +1,6 @@
-import 'package:android/onboarding_screen.dart';
+import 'package:android/ui/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:android/splash_screen.dart';
+import 'package:android/ui/splash/splash_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'ClothisGood',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.pink)),
-      home: OnboardingScreen(),
+      home: SplashScreen(),
     );
   }
 }

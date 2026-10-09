@@ -39,7 +39,13 @@ dependencies:
   flutter_dotenv: ^6.0.1
   geocoding: ^5.0.0
 
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.9.0
+
 dev_dependencies:
+  build_runner: ^2.15.1
+  freezed: ^4.0.0-dev.3
+  json_serializable: ^6.9.0
   flutter_test:
     sdk: flutter
 
@@ -59,6 +65,7 @@ flutter_launcher_icons:
   ios: true
   image_path: "assets/logo/logo-brand.png"
   remove_alpha_ios: true
+
 
 # The following section is specific to Flutter packages.
 flutter:

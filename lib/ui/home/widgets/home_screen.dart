@@ -1,11 +1,12 @@
-import 'package:android/constant.dart';
-import 'package:android/weather/models/weather_model.dart';
-import 'package:android/weather/services/geolocator_service.dart';
-import 'package:android/weather/services/weather_service.dart';
+import 'package:android/data/services/api/api_client.dart';
+import 'package:android/utils/constant.dart';
+import 'package:android/domain/models/weathers/weather.dart';
+import 'package:android/data/services/local/local_geolocator_service.dart';
+import 'package:android/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
-HomeHomeScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
@@ -16,7 +17,7 @@ class _DashboardScreenState extends State<HomeScreen> {
   late final Future<Position?> _positionFuture;
 
   Future<String?>? _addressFuture;
-  Future<WeatherModel?>? _weatherFuture;
+  Future<Result<Weather>>? _weatherFuture;
 
   @override
   void initState() {
@@ -149,12 +150,12 @@ class _DashboardScreenState extends State<HomeScreen> {
 
           final position = locationSnapshot.data!;
 
-          _weatherFuture ??= WeatherService().fetchWeather(
+          _weatherFuture ??= ApiClient().getWeather(
             position.latitude,
             position.longitude,
           );
 
-          return FutureBuilder<WeatherModel?>(
+          return FutureBuilder<Result<Weather>?>(
             future: _weatherFuture,
             builder: (context, weatherSnapshot) {
               if (weatherSnapshot.connectionState == ConnectionState.waiting) {
@@ -169,7 +170,8 @@ class _DashboardScreenState extends State<HomeScreen> {
                 return const Center(child: Text('No Weather found'));
               }
 
-              final weather = weatherSnapshot.data!;
+              final weatherData = weatherSnapshot.data! as Ok<List<Weather>>;
+              final weather = weatherData.value.first;
 
               return Padding(
                 padding: const EdgeInsets.all(16.0),

@@ -1,6 +1,6 @@
-import 'package:android/dashboard_screen.dart';
+import 'package:android/ui/home/widgets/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:android/constant.dart';
+import 'package:android/utils/constant.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -60,7 +60,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _finishOnboarding() {
     Navigator.pushReplacement(context,
       MaterialPageRoute(builder: 
-        (context) => DashboardScreen())
+        (context) => HomeScreen())
     );
   }
 
