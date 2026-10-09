@@ -1,4 +1,5 @@
 import 'package:android/data/services/api/api_client.dart';
+import 'package:android/ui/home/widgets/navigation_app_bar.dart';
 import 'package:android/utils/constant.dart';
 import 'package:android/domain/models/weathers/weather.dart';
 import 'package:android/data/services/local/local_geolocator_service.dart';
@@ -28,6 +29,7 @@ class _DashboardScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: const NavigationAppBar(),
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

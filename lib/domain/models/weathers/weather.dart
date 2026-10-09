@@ -17,9 +17,6 @@ abstract class Weather with _$Weather {
 
   factory Weather.fromJson(Map<String, Object?> json) =>
       _$WeatherFromJson(json);
-
-  static List<Weather> listFromJson(List<Map<String, Object?>> json) =>
-      json.map((i) => _$WeatherFromJson(i)).toList();
 }
 
 // @freezed

@@ -1,3 +1,4 @@
+import 'package:android/ui/home/widgets/home_screen.dart';
 import 'package:android/ui/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:android/ui/splash/splash_screen.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'ClothisGood',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.pink)),
-      home: SplashScreen(),
+      home: HomeScreen(),
     );
   }
 }
