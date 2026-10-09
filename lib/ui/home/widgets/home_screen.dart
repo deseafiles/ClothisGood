@@ -170,8 +170,8 @@ class _DashboardScreenState extends State<HomeScreen> {
                 return const Center(child: Text('No Weather found'));
               }
 
-              final weatherData = weatherSnapshot.data! as Ok<List<Weather>>;
-              final weather = weatherData.value.first;
+              final weatherData = weatherSnapshot.data! as Ok<Weather>;
+              final weather = weatherData.value;
 
               return Padding(
                 padding: const EdgeInsets.all(16.0),

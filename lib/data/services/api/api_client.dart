@@ -70,7 +70,33 @@ class ApiClient {
         final body = await response.transform(utf8.decoder).join();
         final json = jsonDecode(body) as Map<String, dynamic>;
 
-        return Result.ok(Weather.fromJson(json));
+        final weather = new Weather(
+          latitude: json['latitude'],
+          longitude: json['longitude'],
+          temperature2m: List<double>.from(json['hourly']['temperature_2m']),
+          precipitationProbability: List<int>.from(json['hourly']['precipitation_probability']),
+          relativeHumidity2m: List<int>.from(json['hourly']['relative_humidity_2m']),
+          rain: List<double>.from(json['hourly']['rain']),
+          apparentTemperature: List<double>.from(json['hourly']['apparent_temperature']),
+        );
+
+        // final List<Weather> weathers = [];
+        //
+        // for (int index = 0; index < totalData; index++) {
+        //   final weather = new Weather(
+        //     latitude: json['latitude'],
+        //     longitude: json['longitude'],
+        //     temperature2m: json['hourly']['temperature_2m'][index],
+        //     precipitationProbability: json['hourly']['precipitation_probability'][index],
+        //     relativeHumidity2m: json['hourly']['relative_humidity_2m'][index],
+        //     rain: json['hourly']['rain'][index],
+        //     apparentTemperature: json['hourly']['apparent_temperature'][index],
+        //   );
+        //
+        //   weathers.add(weather);
+        // }
+
+        return Result.ok(weather);
       }
 
       return Result.error(
