@@ -1,34 +1,40 @@
 import 'package:android/data/services/api/api_client.dart';
+import 'package:android/domain/models/weathers/selected_location.dart';
+import 'package:android/domain/models/weathers/weather.dart';
 import 'package:android/ui/home/widgets/navigation_app_bar.dart';
+import 'package:android/ui/home/widgets/weather_card.dart';
 import 'package:android/ui/home/widgets/weather_icon.dart';
 import 'package:android/utils/constant.dart';
-import 'package:android/domain/models/weathers/weather.dart';
-import 'package:android/data/services/local/local_geolocator_service.dart';
 import 'package:android/utils/result.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _DashboardScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _DashboardScreenState extends State<HomeScreen> {
-  late final Future<Position?> _positionFuture;
-
+class _HomeScreenState extends State<HomeScreen> {
+  SelectedLocation? _selected;
   Future<Result<Weather>>? _weatherFuture;
 
-  @override
-  void initState() {
-    super.initState();
-    _positionFuture = GeolocatorService().getCurrentPosition();
+  void _onLocationChanged(SelectedLocation location) {
+    if (!mounted) return;
+
+    setState(() {
+      _selected = location;
+      _weatherFuture = ApiClient().getWeather(
+        location.latitude,
+        location.longitude,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       bottomNavigationBar: const NavigationAppBar(),
       appBar: AppBar(
         title: Column(
@@ -57,70 +63,75 @@ class _DashboardScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        actions: [ const WeatherIcon()
+        actions: [
+          WeatherIcon(locationName: _selected?.name),
         ],
       ),
-      backgroundColor: Colors.white,
       body: Column(
         children: [
-          Expanded(
-            child: FutureBuilder<Position?>(
-            future: _positionFuture,
-            builder: (context, locationSnapshot) {
-              if (locationSnapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              if (locationSnapshot.hasError) {
-                return Center(child: Text('Error: ${locationSnapshot.error}'));
-              }
-
-              if (!locationSnapshot.hasData || locationSnapshot.data == null) {
-                return const Center(child: Text('Location not found'));
-              }
-
-              final position = locationSnapshot.data!;
-
-              _weatherFuture ??= ApiClient().getWeather(
-                position.latitude,
-                position.longitude,
-              );
-
-              return FutureBuilder<Result<Weather>?>(
-                future: _weatherFuture,
-                builder: (context, weatherSnapshot) {
-                  if (weatherSnapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  if (weatherSnapshot.hasError) {
-                    return Center(child: Text('Error: ${weatherSnapshot.error}'));
-                  }
-
-                  if (!weatherSnapshot.hasData || weatherSnapshot.data == null) {
-                    return const Center(child: Text('No Weather found'));
-                  }
-
-                  final weatherData = weatherSnapshot.data! as Ok<Weather>;
-                  final weather = weatherData.value;
-
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Card(
-                      elevation: 4,
-                      child: ListTile(title: Text('${weather.temperature2m[0]}°C')),
-                    ),
-                  );
-                },
-              );
-            },
+          Expanded(child: _buildWeatherBody()),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: WeatherCard(onLocationChanged: _onLocationChanged),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: const WeatherIcon(),
-        )
-      ],
-    ) 
-  );
-}}
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWeatherBody() {
+    final future = _weatherFuture;
+
+    // Dropdown belum selesai memuat lokasi pertama.
+    if (future == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return FutureBuilder<Result<Weather>>(
+      future: future,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+
+        final result = snapshot.data;
+        if (result == null) {
+          return const Center(child: Text('No Weather found'));
+        }
+
+        if (result is Ok<Weather>) {
+          final weather = result.value;
+          final temps = weather.temperature2m;
+
+          if (temps.length <= 2) {
+            return const Center(child: Text('No Weather found'));
+          }
+
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Card(
+              elevation: 4,
+              child: ListTile(
+                title: Text('${temps[2]}°C'),
+                subtitle: _selected == null
+                    ? null
+                    : Text('${_selected!.name}, ${_selected!.district}'),
+              ),
+            ),
+          );
+        }
+
+        if (result is Error<Weather>) {
+          return Center(child: Text('Error: ${result.error}'));
+        }
+
+        // Fallback supaya selalu ada return.
+        return const Center(child: Text('No Weather found'));
+      },
+    );
+  }
+}

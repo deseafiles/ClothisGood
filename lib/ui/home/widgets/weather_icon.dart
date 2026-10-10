@@ -1,89 +1,103 @@
 import 'package:android/data/services/local/local_geolocator_service.dart';
-import 'package:flutter/material.dart'; // Changed from widgets.dart to material.dart to access Icons and CircularProgressIndicator
-import 'package:geolocator/geolocator.dart';
 import 'package:android/utils/constant.dart';
+import 'package:flutter/material.dart';
 
 class WeatherIcon extends StatefulWidget {
-  const WeatherIcon({ super.key });
+  const WeatherIcon({
+    super.key,
+    this.locationName,
+    this.useGps = false,
+  });
+
+  /// Nama kelurahan dari dropdown.
+  final String? locationName;
+
+  /// Kalau true, abaikan [locationName] dan pakai GPS perangkat.
+  final bool useGps;
 
   @override
   State<WeatherIcon> createState() => _WeatherIconState();
 }
 
 class _WeatherIconState extends State<WeatherIcon> {
-  late final Future<Position?> _positionFuture;
-  
-  Future<String?>? _addressFuture;
+  final GeolocatorService _geolocatorService = GeolocatorService();
+
+  Future<String?>? _gpsNameFuture;
 
   @override
   void initState() {
     super.initState();
-    _positionFuture = GeolocatorService().getCurrentPosition();
+    if (widget.useGps) _gpsNameFuture = _loadGpsName();
   }
-  
+
+  @override
+  void didUpdateWidget(covariant WeatherIcon oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.useGps && !oldWidget.useGps) {
+      _gpsNameFuture = _loadGpsName();
+    }
+  }
+
+  Future<String?> _loadGpsName() async {
+    final position = await _geolocatorService.getCurrentPosition();
+    if (position == null) return null;
+
+    return _geolocatorService.getCurrentLocation(
+      position.latitude,
+      position.longitude,
+    );
+  }
+
+  Widget _spinner() => const Padding(
+        padding: EdgeInsets.all(12),
+        child: SizedBox(
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+      );
+
+  Widget _label(String text) => Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Center(
+          child: Text(text, 
+            style: TextStyle(
+              color: AppColors.primary,
+              ) 
+            ),
+          )
+        );
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Position?>(
-      future: _positionFuture,
-      builder: (context, locationSnapshot) {
-        if (locationSnapshot.connectionState == ConnectionState.waiting) {
-          return const Padding(
-            padding: EdgeInsets.all(12),
-            child: SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-          );
+    // Mode dropdown
+    if (!widget.useGps) {
+      final name = widget.locationName;
+      if (name == null || name.isEmpty) return _spinner();
+      return _label(name);
+    }
+
+    // Mode GPS
+    return FutureBuilder<String?>(
+      future: _gpsNameFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return _spinner();
         }
 
-        if (locationSnapshot.hasError) {
-          return const Center(child: Text('Location error'));
+        if (snapshot.hasError) {
+          debugPrint('LOCATION ERROR: ${snapshot.error}');
+          debugPrint('STACK: ${snapshot.stackTrace}');
+          return Center(child: Text('${snapshot.error}'));
         }
 
-        if (!locationSnapshot.hasData || locationSnapshot.data == null) {
+        final name = snapshot.data;
+        if (name == null || name.isEmpty) {
           return const Center(child: Text('Location not found'));
         }
 
-        final position = locationSnapshot.data!;
-
-        _addressFuture ??= GeolocatorService().getCurrentLocation(
-          position,
-        );
-
-        return FutureBuilder<String?>(
-          future: _addressFuture,
-          builder: (context, addressSnapshot) {
-            if (addressSnapshot.connectionState ==
-                ConnectionState.waiting) {
-              return const Padding(
-                padding: EdgeInsets.all(12),
-                child: SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-              );
-            }
-
-            if (addressSnapshot.hasError) {
-              debugPrint('ADDRESS ERROR: ${addressSnapshot.error}');
-              debugPrint('STACK: ${addressSnapshot.stackTrace}');
-              return const Center(child: Text('Address error'));
-            }
-
-            if (!addressSnapshot.hasData ||
-                addressSnapshot.data == null) {
-              return const Center(child: Text('Location not found'));
-            }
-
-            return Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: Center(child: Text(addressSnapshot.data!)),
-            );
-          },
-        );
+        return _label(name);
       },
     );
   }

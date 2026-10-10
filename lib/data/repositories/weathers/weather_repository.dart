@@ -3,4 +3,6 @@ import 'package:android/utils/result.dart';
 
 abstract class WeatherRepository {
  Future<Result<List<Weather>>> getWeather(double lat, double long);
+
+ Future<Result<List<Weather>>> searchLocation(double lat, double long);
 }

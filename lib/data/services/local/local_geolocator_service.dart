@@ -33,12 +33,12 @@ class GeolocatorService {
       return position;
     }
   
-  Future<String?> getCurrentLocation(Position position) async {
+  Future<String?> getCurrentLocation(double lat, double long) async {
     final Geocoding geocoding = Geocoding(); 
     try {
       final placemarks = await geocoding.placemarkFromCoordinates(
-        position.latitude,
-        position.longitude,
+        lat,
+        long,
       );
 
 //       final placemarks = await geocoding.placemarkFromCoordinates(
@@ -50,6 +50,7 @@ class GeolocatorService {
       }
 
       final place = placemarks.first;
+      // nama kelurahan
       final location = place.subLocality
       ?? place.locality ?? place.subAdministrativeArea ?? 'Unknown location';
 

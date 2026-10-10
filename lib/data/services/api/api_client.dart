@@ -35,6 +35,19 @@ class ApiClient {
     }
   }
 
+  // Future<Result<Weather>> searchLocation(
+  //   double lat,
+  //   double long,
+  // ) async {
+  //     final client = _clientFactory();
+  //
+  //     try {
+  //
+  //           } catch (e) {
+  //
+  //           }
+  //   }
+
   Future<Result<Weather>> getWeather(
     double lat,
     double long,

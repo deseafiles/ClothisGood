@@ -1,0 +1,207 @@
+[
+  {
+    "name": "Damai Baru",
+    "district": "Balikpapan Selatan",
+    "latitude": -1.2480,
+    "longitude": 116.8720
+  },
+  {
+    "name": "Damai Bahagia",
+    "district": "Balikpapan Selatan",
+    "latitude": -1.2390,
+    "longitude": 116.8890
+  },
+  {
+    "name": "Sepinggan Baru",
+    "district": "Balikpapan Selatan",
+    "latitude": -1.2370,
+    "longitude": 116.9240
+  },
+  {
+    "name": "Sungai Nangka",
+    "district": "Balikpapan Selatan",
+    "latitude": -1.2370,
+    "longitude": 116.8840
+  },
+  {
+    "name": "Sepinggan Raya",
+    "district": "Balikpapan Selatan",
+    "latitude": -1.2230,
+    "longitude": 116.9090
+  },
+  {
+    "name": "Gunung Bahagia",
+    "district": "Balikpapan Selatan",
+    "latitude": -1.2380,
+    "longitude": 116.9010
+  },
+  {
+    "name": "Sepinggan",
+    "district": "Balikpapan Selatan",
+    "latitude": -1.2580,
+    "longitude": 116.9290
+  },
+  {
+    "name": "Prapatan",
+    "district": "Balikpapan Kota",
+    "latitude": -1.258589,
+    "longitude": 116.813595
+  },
+  {
+    "name": "Telaga Sari",
+    "district": "Balikpapan Kota",
+    "latitude": -1.2460,
+    "longitude": 116.8290
+  },
+  {
+    "name": "Klandasan Ulu",
+    "district": "Balikpapan Kota",
+    "latitude": -1.2690,
+    "longitude": 116.8310
+  },
+  {
+    "name": "Klandasan Ilir",
+    "district": "Balikpapan Kota",
+    "latitude": -1.2670,
+    "longitude": 116.8370
+  },
+  {
+    "name": "Damai",
+    "district": "Balikpapan Kota",
+    "latitude": -1.2540,
+    "longitude": 116.8500
+  },
+  {
+    "name": "Manggar",
+    "district": "Balikpapan Timur",
+    "latitude": -1.2300,
+    "longitude": 116.9710
+  },
+  {
+    "name": "Manggar Baru",
+    "district": "Balikpapan Timur",
+    "latitude": -1.2180,
+    "longitude": 116.9690
+  },
+  {
+    "name": "Lamaru",
+    "district": "Balikpapan Timur",
+    "latitude": -1.1870,
+    "longitude": 117.0150
+  },
+  {
+    "name": "Teritip",
+    "district": "Balikpapan Timur",
+    "latitude": -1.1420,
+    "longitude": 117.0450
+  },
+  {
+    "name": "Gunung Sari Ilir",
+    "district": "Balikpapan Tengah",
+    "latitude": -1.2660,
+    "longitude": 116.8320
+  },
+  {
+    "name": "Gunung Sari Ulu",
+    "district": "Balikpapan Tengah",
+    "latitude": -1.2520,
+    "longitude": 116.8240
+  },
+  {
+    "name": "Mekar Sari",
+    "district": "Balikpapan Tengah",
+    "latitude": -1.2500,
+    "longitude": 116.8310
+  },
+  {
+    "name": "Karang Rejo",
+    "district": "Balikpapan Tengah",
+    "latitude": -1.2540,
+    "longitude": 116.8290
+  },
+  {
+    "name": "Sumber Rejo",
+    "district": "Balikpapan Tengah",
+    "latitude": -1.2480,
+    "longitude": 116.8190
+  },
+  {
+    "name": "Karang Jati",
+    "district": "Balikpapan Tengah",
+    "latitude": -1.2420,
+    "longitude": 116.8270
+  },
+  {
+    "name": "Baru Ilir",
+    "district": "Balikpapan Barat",
+    "latitude": -1.2260,
+    "longitude": 116.8110
+  },
+  {
+    "name": "Margo Mulyo",
+    "district": "Balikpapan Barat",
+    "latitude": -1.2180,
+    "longitude": 116.8140
+  },
+  {
+    "name": "Marga Sari",
+    "district": "Balikpapan Barat",
+    "latitude": -1.2310,
+    "longitude": 116.8140
+  },
+  {
+    "name": "Baru Tengah",
+    "district": "Balikpapan Barat",
+    "latitude": -1.2250,
+    "longitude": 116.8190
+  },
+  {
+    "name": "Baru Ulu",
+    "district": "Balikpapan Barat",
+    "latitude": -1.2220,
+    "longitude": 116.8170
+  },
+  {
+    "name": "Kariangau",
+    "district": "Balikpapan Barat",
+    "latitude": -1.1120,
+    "longitude": 116.7940
+  },
+  {
+    "name": "Gunung Samarinda",
+    "district": "Balikpapan Utara",
+    "latitude": -1.2140,
+    "longitude": 116.8590
+  },
+  {
+    "name": "Batu Ampar",
+    "district": "Balikpapan Utara",
+    "latitude": -1.2250,
+    "longitude": 116.8470
+  },
+  {
+    "name": "Muara Rapak",
+    "district": "Balikpapan Utara",
+    "latitude": -1.1850,
+    "longitude": 116.8590
+  },
+  {
+    "name": "Karang Joang",
+    "district": "Balikpapan Utara",
+    "latitude": -1.1330,
+    "longitude": 116.8790
+  },
+  {
+    "name": "Gunung Samarinda Baru",
+    "district": "Balikpapan Utara",
+    "latitude": -1.2020,
+    "longitude": 116.8660
+  },
+  {
+    "name": "Graha Indah",
+    "district": "Balikpapan Utara",
+    "latitude": -1.1870,
+    "longitude": 116.8420
+  }
+]
+
