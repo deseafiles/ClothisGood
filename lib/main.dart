@@ -1,4 +1,4 @@
-import 'package:android/ui/home/widgets/home_screen.dart';
+import 'package:android/ui/home/home_screen.dart';
 import 'package:android/ui/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:android/ui/splash/splash_screen.dart';

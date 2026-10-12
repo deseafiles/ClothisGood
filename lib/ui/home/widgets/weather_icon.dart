@@ -69,13 +69,31 @@ class _WeatherIconState extends State<WeatherIcon> {
           )
         );
 
+  Widget _title(String text) => Row(
+    spacing: 5,
+    children: [
+      Text(text, style: 
+        TextStyle(
+          color: AppColors.textSecondary,
+          letterSpacing: 0.4,
+        ),
+      ),
+
+      Padding(padding: const EdgeInsets.only(right: 10),
+        child: Icon(Icons.cloud_rounded, 
+        color: AppColors.primaryLight,
+        ),
+      )
+    ],
+  );
+
   @override
   Widget build(BuildContext context) {
     // Mode dropdown
     if (!widget.useGps) {
       final name = widget.locationName;
       if (name == null || name.isEmpty) return _spinner();
-      return _label(name);
+      return _title(name);
     }
 
     // Mode GPS

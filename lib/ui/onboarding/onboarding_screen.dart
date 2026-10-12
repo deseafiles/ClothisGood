@@ -1,4 +1,4 @@
-import 'package:android/ui/home/widgets/home_screen.dart';
+import 'package:android/ui/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:android/utils/constant.dart';
 
@@ -60,7 +60,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _finishOnboarding() {
     Navigator.pushReplacement(context,
       MaterialPageRoute(builder: 
-        (context) => HomeScreen())
+        (context) => HomeScreen()
+      )
     );
   }
 
