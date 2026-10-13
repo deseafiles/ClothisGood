@@ -1,6 +1,7 @@
 import 'package:android/data/services/api/api_client.dart';
 import 'package:android/domain/models/weathers/selected_location.dart';
 import 'package:android/domain/models/weathers/weather.dart';
+import 'package:android/ui/cloth/cloth_card.dart';
 import 'package:android/ui/weather/weather_card.dart';
 // import 'package:android/ui/home/widgets/navigation_app_bar.dart';
 // import 'package:android/ui/home/widgets/weather_card.dart';
@@ -46,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(
               'ClothisGood',
               style: TextStyle(
-                fontFamily: 'Plus Jakarta Sans',
+                fontFamily: 'Inter',
                 fontWeight: FontWeight.w500,
                 fontSize: 20,
                 letterSpacing: 3.0,
@@ -55,18 +56,19 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        actions: [
-          WeatherIcon(),
-        ],
+        // actions: [
+        //   WeatherIcon(),
+        // ],
       ),
       body: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
               padding: const EdgeInsets.only(left: 14),
               child: Text('Good weather. Better outifts.',
                 style: TextStyle(
-                  fontSize: 30.0,
-                  letterSpacing: 4.0,
+                  fontFamily: 'Lora',
+                  fontSize: 36.0,
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w400,
                   )
@@ -76,7 +78,20 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
               padding: const EdgeInsets.all(10),
               child: WeatherCard(),
-            )
+            ),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 14),
+            child: Text('Your outfit for today', style: TextStyle(
+              fontFamily: 'Lora',
+              color: AppColors.textPrimary,
+              fontSize: 25,
+            ))
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(14),
+            child: ClothCard())
         ],
         // children: [
         //   Expanded(child: _buildWeatherBody()),

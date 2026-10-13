@@ -58,6 +58,7 @@ class _WeatherCardState extends State<WeatherCard> {
               children: [
               Text('18°', style: TextStyle(
                 fontSize: 50,
+                  color: AppColors.textPrimary
                 ),
               ),
 
