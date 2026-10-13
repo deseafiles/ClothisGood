@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:android/utils/constant.dart';
 
 class NavigationAppBar  extends StatelessWidget {
   const NavigationAppBar ({required this.shell, super.key});
@@ -10,6 +11,7 @@ class NavigationAppBar  extends StatelessWidget {
     return Scaffold(
       body: shell,
       bottomNavigationBar: NavigationBar(
+        backgroundColor: AppColors.surface,
         selectedIndex: shell.currentIndex,
         onDestinationSelected: (index) {
             shell.goBranch(

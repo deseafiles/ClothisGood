@@ -1,9 +1,12 @@
 import 'package:android/data/services/api/api_client.dart';
 import 'package:android/domain/models/weathers/selected_location.dart';
 import 'package:android/domain/models/weathers/weather.dart';
-import 'package:android/ui/home/widgets/navigation_app_bar.dart';
-import 'package:android/ui/home/widgets/weather_card.dart';
-import 'package:android/ui/home/widgets/weather_icon.dart';
+import 'package:android/ui/cloth/cloth_card.dart';
+import 'package:android/ui/weather/weather_card.dart';
+// import 'package:android/ui/home/widgets/navigation_app_bar.dart';
+// import 'package:android/ui/home/widgets/weather_card.dart';
+// import 'package:android/ui/home/widgets/weather_icon.dart';
+import 'package:android/ui/weather/weather_icon.dart';
 import 'package:android/utils/constant.dart';
 import 'package:android/utils/result.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       // bottomNavigationBar: const NavigationAppBar(),
       appBar: AppBar(
         title: Column(
@@ -44,37 +47,59 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(
               'ClothisGood',
               style: TextStyle(
-                fontFamily: 'Plus Jakarta Sans',
-                fontWeight: FontWeight.w700,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w500,
                 fontSize: 20,
-                letterSpacing: 1.5,
+                letterSpacing: 3.0,
                 color: AppColors.primary,
-              ),
-            ),
-            Text(
-              "Let's find your style!",
-              style: TextStyle(
-                fontFamily: 'Plus Jakarta Sans',
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.italic,
-                color: AppColors.textSecondary,
               ),
             ),
           ],
         ),
-        actions: [
-          WeatherIcon(locationName: _selected?.name),
-        ],
+        // actions: [
+        //   WeatherIcon(),
+        // ],
       ),
       body: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(child: _buildWeatherBody()),
           Padding(
-            padding: const EdgeInsets.all(16),
-            child: WeatherCard(onLocationChanged: _onLocationChanged),
+              padding: const EdgeInsets.only(left: 14),
+              child: Text('Good weather. Better outifts.',
+                style: TextStyle(
+                  fontFamily: 'Lora',
+                  fontSize: 36.0,
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w400,
+                  )
+                )
           ),
+
+          Padding(
+              padding: const EdgeInsets.all(10),
+              child: WeatherCard(),
+            ),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 14),
+            child: Text('Your outfit for today', style: TextStyle(
+              fontFamily: 'Lora',
+              color: AppColors.textPrimary,
+              fontSize: 25,
+            ))
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(14),
+            child: ClothCard())
         ],
+        // children: [
+        //   Expanded(child: _buildWeatherBody()),
+        //   Padding(
+        //     padding: const EdgeInsets.all(16),
+        //     child: WeatherCard(onLocationChanged: _onLocationChanged),
+        //   ),
+        // ],
       ),
     );
   }
