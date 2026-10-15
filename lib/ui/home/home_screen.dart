@@ -3,9 +3,6 @@ import 'package:android/domain/models/weathers/selected_location.dart';
 import 'package:android/domain/models/weathers/weather.dart';
 import 'package:android/ui/cloth/cloth_card.dart';
 import 'package:android/ui/weather/weather_card.dart';
-// import 'package:android/ui/home/widgets/navigation_app_bar.dart';
-// import 'package:android/ui/home/widgets/weather_card.dart';
-// import 'package:android/ui/home/widgets/weather_icon.dart';
 import 'package:android/ui/weather/weather_icon.dart';
 import 'package:android/utils/constant.dart';
 import 'package:android/utils/result.dart';
@@ -68,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text('Good weather. Better outifts.',
                 style: TextStyle(
                   fontFamily: 'Lora',
-                  fontSize: 36.0,
+                  fontSize: 25.0,
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w400,
                   )
@@ -85,13 +82,24 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Text('Your outfit for today', style: TextStyle(
               fontFamily: 'Lora',
               color: AppColors.textPrimary,
-              fontSize: 25,
+              fontSize: 18,
             ))
           ),
 
-          Padding(
-            padding: const EdgeInsets.all(14),
-            child: ClothCard())
+          Expanded(child: 
+            Padding(
+              padding: const EdgeInsets.all(14),
+              child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                children: [
+                  ClothCard(),
+                  ClothCard(),
+                  ClothCard(),
+                  ClothCard()
+                ],)
+            ) 
+          )
         ],
         // children: [
         //   Expanded(child: _buildWeatherBody()),

@@ -15,7 +15,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         return SearchBar(
           controller: controller,
           padding: const WidgetStatePropertyAll<EdgeInsets>(
-            EdgeInsets.symmetric(horizontal: 14.0),
+            EdgeInsets.symmetric(horizontal: 16.0),
           ),
           onTap: () {
               controller.openView();

@@ -1,6 +1,5 @@
 import 'package:android/utils/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ClothCard extends StatefulWidget {
   const ClothCard({super.key});
@@ -17,33 +16,60 @@ class _ClothCardState extends State<ClothCard> {
         borderRadius: BorderRadius.circular(20.0),
       ),
       color: AppColors.surface,
-      child: Center(
-        child: Column(
-          children: [
-            Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg', height: 150, width: 150,),
-            
-            Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('The effortless layer', style: TextStyle(
-                  fontFamily: 'Lora',
-                  fontSize: 20,
-                  color: AppColors.textPrimary
-                )),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: Image.network(
+                  'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+                  height: 100,
+                  width: 200,
+                  fit: BoxFit.cover,
+                ),
+              ),
 
-                Icon(Icons.arrow_outward)
-              ],
-            ),
+              const SizedBox(height: 12),
 
-            Text('Light trench + cotton tee + straight jeans. Finish with sneakers for a day on the go.', style: TextStyle(
-              color: AppColors.primary,
-              fontSize: 16,
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.w500,
-            ))
-          ],
-        )
-      )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text('The effortless layer', style: TextStyle(
+                      fontFamily: 'Lora',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary
+                    )),
+                  ),
+
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.arrow_outward, size: 16, color: AppColors.primary),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 6),
+
+              Text('Light trench + cotton tee + straight jeans...', style: TextStyle(
+                color: AppColors.primary,
+                fontSize: 12,
+                height: 1.4,
+                fontFamily: 'Plus Jakarta Sans',
+                fontWeight: FontWeight.w500,
+              ))
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
