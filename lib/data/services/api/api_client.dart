@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:android/domain/models/weathers/weather.dart';
+
 class ApiService {
   static const baseUrl = 'https://api.open-meteo.com/v1';
 
@@ -24,7 +26,9 @@ class ApiService {
 
   Future<dynamic> getWeather() async {
     // final List data = await _get('posts');
-    final Weather data = await _get('/forecast?latitude=52.52&longitude=13.41&daily=temperature_2m_max,temperature_2m_min&hourly=temperature_2m,uv_index,apparent_temperature,precipitation_probability,relative_humidity_2m,wind_speed_10m,weather_code');
+    final List data = await _get('/forecast?latitude=52.52&longitude=13.41&daily=temperature_2m_max,temperature_2m_min&hourly=temperature_2m,uv_index,apparent_temperature,precipitation_probability,relative_humidity_2m,wind_speed_10m,weather_code');
+
+    return data.map((item) => Weather.fromJson(item)).toList();
     // return data.map((item) => Post.fromJson(item)).toList();
   }
 }

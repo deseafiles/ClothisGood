@@ -24,48 +24,120 @@ class _ClothCardState extends State<ClothCard> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(14),
-                child: Image.network(
-                  'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                  height: 50,
-                  width: 200,
-                  fit: BoxFit.cover,
-                ),
-              ),
-
-              const SizedBox(height: 12),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text('The effortless layer', style: TextStyle(
-                      fontFamily: 'Lora',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary
-                    )),
-                  ),
-
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.1),
-                      shape: BoxShape.circle,
+                child: Stack(
+                  children: [
+                    Image.network(
+                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+                      fit: BoxFit.cover,
                     ),
-                    child: Icon(Icons.arrow_outward, size: 16, color: AppColors.primary),
-                  ),
-                ],
+                    
+                    Positioned(
+                      top: 10,
+                      left: 10,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.pinkLight,
+                          borderRadius: BorderRadius.circular(6),
+                          ),
+                        child: Text('Nama Author', style: TextStyle(
+                          fontFamily: 'Lora',
+                          fontSize: 8,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary
+                        )),
+                      ),
+                    ),
+                    
+                    Positioned(
+                      bottom: 10,
+                      left: 10,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.pinkLight,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Text(
+                          'The effortless layer',
+                          style: TextStyle(
+                            fontFamily: 'Lora',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    
+                    Positioned(
+                      bottom: 6,
+                      right: 10,
+                      child: Container(
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(
+                          maxWidth: 30,
+                          maxHeight: 30,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.pinkLight,
+                          borderRadius: BorderRadius.circular(90),
+                        ),
+                        child: IconButton(
+                          onPressed: () {}, 
+                          icon: Icon(Icons.arrow_outward, 
+                            size: 16, 
+                            color: AppColors.primary,
+                            
+                          ),
+                        )
+                      ),
+                    ),
+                  ],
+                )
               ),
 
-              const SizedBox(height: 6),
+              // const SizedBox(height: 12),
 
-              Text('Light trench + cotton tee + straight jeans...', style: TextStyle(
-                color: AppColors.primary,
-                fontSize: 12,
-                height: 1.4,
-                fontFamily: 'Plus Jakarta Sans',
-                fontWeight: FontWeight.w500,
-              ))
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Expanded(
+              //       child: 
+              // Text('The effortless layer', style: TextStyle(
+              //         fontFamily: 'Lora',
+              //         fontSize: 14,
+              //         fontWeight: FontWeight.w600,
+              //         color: AppColors.textPrimary
+              //       )),
+              //     ),
+              //
+              //     Container(
+              //       padding: const EdgeInsets.all(6),
+              //       decoration: BoxDecoration(
+              //         color: AppColors.primary.withOpacity(0.1),
+              //         shape: BoxShape.circle,
+              //       ),
+              //       child: Icon(Icons.arrow_outward, size: 16, color: AppColors.primary),
+              //     ),
+              //   ],
+              // ),
+              //
+              // const SizedBox(height: 6),
+              //
+              // Text('Light trench + cotton tee + straight jeans...', style: TextStyle(
+              //   color: AppColors.primary,
+              //   fontSize: 12,
+              //   height: 1.4,
+              //   fontFamily: 'Plus Jakarta Sans',
+              //   fontWeight: FontWeight.w500,
+              // ))
             ],
           ),
         ),
