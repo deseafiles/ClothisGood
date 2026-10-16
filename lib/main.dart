@@ -1,13 +1,15 @@
-import 'package:android/ui/home/home_screen.dart';
-import 'package:android/ui/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:android/ui/splash/splash_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:android/routing/router.dart';
 
 Future<void> main() async {
   await dotenv.load();
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
