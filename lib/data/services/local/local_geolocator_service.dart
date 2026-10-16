@@ -1,39 +1,49 @@
+import 'dart:async';
+
+import 'package:android/domain/models/weathers/weather.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
 class GeolocatorService {
-  Future<Position?> getCurrentPosition() async {
-      bool serviceEnabled;
-      LocationPermission permission;
-
-      serviceEnabled = await Geolocator.isLocationServiceEnabled();
-
-      if (!serviceEnabled) {
-          return Future.error('Location services are disable.');
-        }
-
-      permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-          permission = await Geolocator.requestPermission();
-
-          if (permission == LocationPermission.denied) {
-              return Future.error('Location permissions are denied');
-            }
-        }
-
-      if (permission == LocationPermission.deniedForever) {
-          return Future.error('Location permissions are permanently denied, cannot request.');
-        }
-
-      Position position = await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy:  LocationAccuracy.medium,
-      distanceFilter: 50));
-
-      print('Latitude: ${position.latitude}, Longitude: ${position.longitude}');
-
-      return position;
+  Future<Position> getCurrentPosition() async {
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Layanan lokasi tidak aktif.');
     }
+
+    var permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Izin lokasi ditolak.');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+        'Izin lokasi ditolak permanen. Aktifkan lewat pengaturan aplikasi.',
+      );
+    }
+
+    final position = await Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.medium,
+        timeLimit: Duration(seconds: 15),
+      ),
+    );
+
+    print('Latitude: ${position.latitude}, Longitude: ${position.longitude}');
+    return position;
+  }
+
+  Stream<Position> positionStream() => Geolocator.getPositionStream(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.medium,
+          distanceFilter: 100,
+        ),
+      );
   
-  Future<String?> getCurrentLocation(double lat, double long) async {
+  static Future<String?> fromLatLongIntoLocation(double lat, double long) async {
     final Geocoding geocoding = Geocoding(); 
     try {
       final placemarks = await geocoding.placemarkFromCoordinates(

@@ -1,4 +1,5 @@
 import 'package:android/controller/weather/weather_controller.dart';
+import 'package:android/data/services/local/local_geolocator_service.dart';
 import 'package:android/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,61 +7,90 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class WeatherCard extends ConsumerWidget {
   const WeatherCard({super.key});
 
-  static const _location = (lat: 48.8566, lon: 2.3522);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final weatherAsync = ref.watch(weatherProvider(_location));
+    final locationAsync = ref.watch(locationProvider);
 
-    return weatherAsync.when(
-      loading: () => Container(
-        height: 150,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: AppColors.pinkLight,
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: const Center(
-          child: CircularProgressIndicator(),
-        ),
+    return locationAsync.when(
+      loading: () => const _CardShell(
+        child: Center(child: CircularProgressIndicator()),
       ),
-      error: (error, stackTrace) {
-          debugPrintStack(stackTrace: stackTrace, maxFrames: 8);
-          debugPrint('WeatherError: $error');
-        return Container(
-        height: 150,
-        width: double.infinity,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.pinkLight,
-          borderRadius: BorderRadius.circular(18),
-        ),
+      error: (error, stackTrace) => _CardShell(
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.cloud_off_rounded),
+              const Icon(Icons.location_off_rounded),
               const SizedBox(height: 8),
-              const Text('Gagal memuat data cuaca'),
+              Text(
+                '$error',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 12),
+              ),
               TextButton(
-                onPressed: () => ref.invalidate(weatherProvider(_location)),
+                onPressed: () => ref.invalidate(locationProvider),
                 child: const Text('Coba lagi'),
               ),
             ],
           ),
         ),
-      );
-        }, 
+      ),
+      data: (position) => _WeatherBody(
+        lat: position.latitude,
+        lon: position.longitude,
+      ),
+    );
+  }
+}
+
+class _WeatherBody extends ConsumerWidget {
+  const _WeatherBody({required this.lat, required this.lon});
+
+  final double lat;
+  final double lon;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final params = (lat: lat, lon: lon);
+    final weatherAsync = ref.watch(weatherProvider(params));
+    final nameLocation = ref.watch(decodeLocationProvider(params));
+
+    return weatherAsync.when(
+      loading: () => const _CardShell(
+        child: Center(child: CircularProgressIndicator()),
+      ),
+      error: (error, stackTrace) {
+        debugPrintStack(stackTrace: stackTrace, maxFrames: 8);
+        debugPrint('WeatherError: $error');
+        return _CardShell(
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.cloud_off_rounded),
+                const SizedBox(height: 8),
+                const Text('Gagal memuat data cuaca'),
+                TextButton(
+                  onPressed: () => ref.invalidate(weatherProvider(params)),
+                  child: const Text('Coba lagi'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
       data: (weather) {
         final hourly = weather.hourly;
         final daily = weather.daily;
 
         // Cari indeks jam yang sesuai dengan waktu sekarang.
-        // Bekerja untuk List<DateTime> maupun List<String>.
         final now = DateTime.now();
         int index = hourly.time.indexWhere((e) {
           final Object value = e;
-          final t = value is DateTime ? value : DateTime.parse(value.toString());
+          final t =
+              value is DateTime ? value : DateTime.parse(value.toString());
           return t.year == now.year &&
               t.month == now.month &&
               t.day == now.day &&
@@ -77,45 +107,41 @@ class WeatherCard extends ConsumerWidget {
         final maxTemperature = daily.temperature2mMax.first;
         final minTemperature = daily.temperature2mMin.first;
 
-        return Container(
-          padding: const EdgeInsets.all(12),
-          width: double.infinity,
-          height: 150,
-          decoration: BoxDecoration(
-            color: AppColors.pinkLight,
-            borderRadius: BorderRadius.circular(18),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primary.withOpacity(0.15),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
+        return _CardShell(
+          withShadow: true,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // Baris atas: lokasi + label "Today"
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Row(
-                    children: [
-                      Icon(
-                        Icons.location_pin,
-                        size: 18,
-                        color: AppColors.primary,
-                      ),
-                      SizedBox(width: 4),
-                      Text(
-                        'Karang Joang, Balikpapan',
-                        style: TextStyle(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
+                  Expanded(
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.location_pin,
+                          size: 18,
+                          color: AppColors.primary,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: nameLocation.when(
+                            loading: () => const _LocationText(
+                              'Mencari lokasi...',
+                            ),
+                            error: (error, stack) => const _LocationText(
+                              'Lokasi tidak tersedia',
+                            ),
+                            data: (location) => _LocationText(
+                              location ?? 'Unknown location',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
+                  const SizedBox(width: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
@@ -136,6 +162,7 @@ class WeatherCard extends ConsumerWidget {
                   ),
                 ],
               ),
+              // Baris tengah: suhu + ikon
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -192,6 +219,7 @@ class WeatherCard extends ConsumerWidget {
                   ),
                 ],
               ),
+              // Baris bawah: hujan, kelembapan, angin
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -213,6 +241,57 @@ class WeatherCard extends ConsumerWidget {
           ),
         );
       },
+    );
+  }
+}
+
+/// Wadah kartu dengan ukuran dan gaya yang sama untuk semua state.
+class _CardShell extends StatelessWidget {
+  const _CardShell({required this.child, this.withShadow = false});
+
+  final Widget child;
+  final bool withShadow;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      width: double.infinity,
+      height: 150,
+      decoration: BoxDecoration(
+        color: AppColors.pinkLight,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: withShadow
+            ? [
+                BoxShadow(
+                  color: AppColors.primary.withOpacity(0.15),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : null,
+      ),
+      child: child,
+    );
+  }
+}
+
+class _LocationText extends StatelessWidget {
+  const _LocationText(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: const TextStyle(
+        color: AppColors.textPrimary,
+        fontWeight: FontWeight.w600,
+        fontSize: 14,
+      ),
     );
   }
 }
