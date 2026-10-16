@@ -37,10 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: AppColors.background,
       // bottomNavigationBar: const NavigationAppBar(),
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
+        backgroundColor: AppColors.background,
+        forceMaterialTransparency: true,
+        title: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: 
             Text(
               'ClothisGood',
               style: TextStyle(
@@ -51,7 +52,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: AppColors.primary,
               ),
             ),
-          ],
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          // mainAxisSize: MainAxisSize.min,
+          // children: [
+          //   Text(
+          //     'ClothisGood',
+          //     style: TextStyle(
+          //       fontFamily: 'Inter',
+          //       fontWeight: FontWeight.w500,
+          //       fontSize: 20,
+          //       letterSpacing: 3.0,
+          //       color: AppColors.primary,
+          //     ),
+          //   ),
+          // ],
         ),
         // actions: [
         //   WeatherIcon(),
@@ -62,14 +76,18 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Padding(
               padding: const EdgeInsets.only(left: 14),
-              child: Text('Good weather. Better outifts.',
-                style: TextStyle(
-                  fontFamily: 'Lora',
-                  fontSize: 25.0,
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w400,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text('Good weather. Better outifts.',
+                  style: TextStyle(
+                    fontFamily: 'Lora',
+                    fontSize: 28.0,
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w400,
+                    )
                   )
-                )
+
+              )
           ),
 
           Padding(
@@ -81,8 +99,9 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.only(left: 14),
             child: Text('Your outfit for today', style: TextStyle(
               fontFamily: 'Lora',
+              fontWeight: FontWeight.w200,
               color: AppColors.textPrimary,
-              fontSize: 18,
+              fontSize: 16,
             ))
           ),
 
@@ -93,6 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,
                 children: [
+                  ClothCard(),
+                  ClothCard(),
+                  ClothCard(),
                   ClothCard(),
                   ClothCard(),
                   ClothCard(),

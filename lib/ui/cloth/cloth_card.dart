@@ -26,7 +26,7 @@ class _ClothCardState extends State<ClothCard> {
                 borderRadius: BorderRadius.circular(14),
                 child: Image.network(
                   'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                  height: 100,
+                  height: 50,
                   width: 200,
                   fit: BoxFit.cover,
                 ),

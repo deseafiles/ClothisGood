@@ -1,23 +1,70 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:android/domain/models/weathers/daily.dart';
+import 'package:android/domain/models/weathers/daily_units.dart';
+import 'package:android/domain/models/weathers/hourly.dart';
+import 'package:android/domain/models/weathers/hourly_units.dart';
 
-part 'weather.freezed.dart';
-part 'weather.g.dart';
+class Weather {
+    double latitude;
+    double longitude;
+    double generationtimeMs;
+    int utcOffsetSeconds;
+    String timezone;
+    String timezoneAbbreviation;
+    int elevation;
+    HourlyUnits hourlyUnits;
+    Hourly hourly;
+    DailyUnits dailyUnits;
+    Daily daily;
 
-@freezed
-abstract class Weather with _$Weather {
-  const factory Weather({
-    required double latitude,
-    required double longitude,
-    required List<double> temperature2m,
-    required List<int> precipitationProbability,
-    required List<int> relativeHumidity2m,
-    required List<double> rain,
-    required List<double> apparentTemperature,
-  }) = _Weather;
+  Weather({
+      required this.latitude,
+      required this.longitude,
+      required this.generationtimeMs,
+      required this.utcOffsetSeconds,
+      required this.timezone,
+      required this.timezoneAbbreviation,
+      required this.elevation,
+      required this.hourlyUnits,
+      required this.hourly,
+      required this.dailyUnits,
+      required this.daily
+    });
 
-  factory Weather.fromJson(Map<String, Object?> json) =>
-      _$WeatherFromJson(json);
-}
+    factory Weather.fromJson(Map<String, dynamic> json) => Weather(
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      generationtimeMs: json['generationtimeMs'],
+      utcOffsetSeconds: json['utcOffsetSeconds'],
+      timezone: json['timezone'],
+      timezoneAbbreviation: json['timezoneAbbreviation'],
+      elevation: json['elevation'],
+      hourlyUnits: HourlyUnits.fromJson(json['hourlyUnits']),
+      hourly: Hourly.fromJson(json['hourly']),
+      dailyUnits: DailyUnits.fromJson(json['dailyUnits']),
+      daily: Daily.fromJson(json['daily']),
+    );
+  }
+
+// import 'package:freezed_annotation/freezed_annotation.dart';
+//
+// part 'weather.freezed.dart';
+// part 'weather.g.dart';
+//
+// @freezed
+// abstract class Weather with _$Weather {
+//   const factory Weather({
+//     required double latitude,
+//     required double longitude,
+//     required List<double> temperature2m,
+//     required List<int> precipitationProbability,
+//     required List<int> relativeHumidity2m,
+//     required List<double> rain,
+//     required List<double> apparentTemperature,
+//   }) = _Weather;
+//
+//   factory Weather.fromJson(Map<String, Object?> json) =>
+//       _$WeatherFromJson(json);
+// }
 
 // @freezed
 // class WeatherModel {

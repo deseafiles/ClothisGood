@@ -13,6 +13,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
   Widget build(BuildContext context) {
     return SearchAnchor(builder: (BuildContext context, SearchController controller) {
         return SearchBar(
+          hintText: "Cari Outfit..." ,
           controller: controller,
           padding: const WidgetStatePropertyAll<EdgeInsets>(
             EdgeInsets.symmetric(horizontal: 16.0),

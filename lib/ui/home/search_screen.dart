@@ -58,10 +58,14 @@ class _SearchScreenState extends State<SearchScreen> {
               ),)
             ),
 
-            const SearchAppBar(),
 
             Padding(
-              padding: EdgeInsets.all(14),
+              padding: const EdgeInsets.only(right: 14, left: 14),
+              child: SearchAppBar(),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(right: 14, left: 14),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -70,7 +74,23 @@ class _SearchScreenState extends State<SearchScreen> {
                 ]),
               ),
 
-            const ClothCard(),
+          Expanded(child: 
+            Padding(
+              padding: const EdgeInsets.only(right: 14, left: 14),
+              child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                children: [
+                  ClothCard(),
+                  ClothCard(),
+                  ClothCard(),
+                  ClothCard(),
+                  ClothCard(),
+                  ClothCard(),
+                  ClothCard()
+                ],)
+            ) 
+          )
         ],
       )
     );

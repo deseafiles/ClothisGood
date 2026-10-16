@@ -2,7 +2,7 @@ import 'package:android/domain/models/weathers/selected_location.dart';
 import 'package:flutter/material.dart';
 
 import 'weather_card.old.dart';
-import 'weather_card.dart';
+import '../weather_card.dart';
 
 class WeatherSection extends StatefulWidget {
   const WeatherSection({super.key});
