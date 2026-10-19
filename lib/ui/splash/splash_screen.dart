@@ -2,6 +2,7 @@ import 'package:android/utils/constant.dart';
 import 'package:android/ui/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -69,30 +70,15 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    Timer(
-      const Duration(seconds: 3),
-      () {
-        if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) {
-                return OnboardingScreen();
-              },
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
-              transitionDuration: const Duration(milliseconds: 800),
-            ),
-          );
-        }
-      },
-    );
-  }
+  Timer(
+    const Duration(seconds: 3),
+    () {
+        if (!mounted) return;
+
+        context.go('/home');
+      }
+  );
+}
 
 @override
 void dispose() {

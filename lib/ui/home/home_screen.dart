@@ -1,4 +1,4 @@
-import 'package:android/data/services/api/api_client.dart';
+// import 'package:android/data/services/api/api_client.dart';
 // import 'package:android/domain/models/weathers/selected_location.dart';
 import 'package:android/domain/models/weathers/weather.dart';
 import 'package:android/ui/cloth/cloth_card.dart';
@@ -110,8 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(10),
               child: GridView.count(
                 crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                children: [
+                children:const [
                   ClothCard(),
                   ClothCard(),
                   ClothCard(),

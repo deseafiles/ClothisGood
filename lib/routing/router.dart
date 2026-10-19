@@ -1,7 +1,9 @@
 import 'package:android/ui/home/home_screen.dart';
+import 'package:android/ui/home/privacy_policy_screen.dart';
 import 'package:android/ui/home/search_screen.dart';
 import 'package:android/ui/home/setting_screen.dart';
 import 'package:android/ui/home/widgets/navigation_app_bar.dart';
+import 'package:android/ui/splash/splash_screen.dart';
 import 'package:go_router/go_router.dart';
 
 //menggunakan shellroute karena setiap kali pindah halaman(misal dari home ke settings) flutter akan menghapus seluruh tampilan di layar dan menggambar ulang dari 0, sedangkan dengan shellroute menu dibungkus dalam shell. Jadi saat berpindah halaman hanya body tengah saja yang diganti.
@@ -12,8 +14,12 @@ import 'package:go_router/go_router.dart';
 
 // GoRouter configuration
 final router = GoRouter(
-  initialLocation: '/home',
+  initialLocation: '/',
   routes: [ 
+    GoRoute(
+      path: '/', 
+      builder: (context, state) => const SplashScreen(),
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, shell) => NavigationAppBar(shell: shell),
       branches: [
@@ -45,6 +51,11 @@ final router = GoRouter(
         ),
       ],
     ),
+    GoRoute(
+      path: '/privacy-policy', 
+      builder: (context, state) => const PrivacyPolicyScreen(),
+    ),
+
   ], 
 );
 

@@ -4,7 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:android/routing/router.dart';
 
 Future<void> main() async {
-  await dotenv.load();
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+      await dotenv.load(fileName: '.env');
+    } catch (e) {
+      throw Exception('Error loading .env file: $e');
+    };
+
   runApp(
     const ProviderScope(
       child: MyApp(),

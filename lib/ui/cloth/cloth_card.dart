@@ -28,12 +28,12 @@ class _ClothCardState extends State<ClothCard> {
                   children: [
                     Image.network(
                       'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                     ),
                     
                     Positioned(
-                      top: 10,
-                      left: 10,
+                      top: 5,
+                      left: 5,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8,
@@ -53,51 +53,46 @@ class _ClothCardState extends State<ClothCard> {
                     ),
                     
                     Positioned(
-                      bottom: 10,
-                      left: 10,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.pinkLight,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: const Text(
+                      bottom: 5,
+                      left: 5,
+                      child: 
+                        const Text(
                           'The effortless layer',
                           style: TextStyle(
                             fontFamily: 'Lora',
                             fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w300,
+                            color: AppColors.textWhite,
                           ),
-                        ),
                       ),
                     ),
                     
                     Positioned(
-                      bottom: 6,
+                      bottom: 4,
                       right: 10,
-                      child: Container(
-                        padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(
-                          maxWidth: 30,
-                          maxHeight: 30,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.pinkLight,
-                          borderRadius: BorderRadius.circular(90),
-                        ),
-                        child: IconButton(
-                          onPressed: () {}, 
-                          icon: Icon(Icons.arrow_outward, 
-                            size: 16, 
-                            color: AppColors.primary,
+                      child: 
+                        Container(
+                          alignment: Alignment.center,
+                          constraints: BoxConstraints(
+                            maxWidth: 20,
+                            maxHeight: 20,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.pinkLight,
+                            borderRadius: BorderRadius.circular(90),
                             
                           ),
-                        )
-                      ),
+                          child: IconButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {}, 
+                            icon: Icon(Icons.arrow_outward, 
+                              size: 12, 
+                              color: AppColors.primary,
+                              
+                               
+                            ),
+                          )
+                        ),
                     ),
                   ],
                 )

@@ -1,5 +1,6 @@
 import 'package:android/data/repositories/weathers/weather_repository.dart';
 import 'package:android/data/repositories/weathers/weather_repository_impl.dart';
+import 'package:android/data/services/api/weather/weather_api_service.dart';
 import 'package:android/data/services/local/local_geolocator_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:android/data/services/api/api_client.dart';
@@ -7,9 +8,9 @@ import 'package:android/domain/models/weathers/weather.dart';
 import 'package:geolocator/geolocator.dart';
 
 final weatherRepositoryProvider = Provider<WeatherRepository>((ref) {
-  final apiClient = ApiService();
+  final weatherApi = WeatherApiService();
 
-  return WeatherRepositoryImpl(apiClient);
+  return WeatherRepositoryImpl(weatherApi);
 });
 
 final weatherProvider = FutureProvider.family<

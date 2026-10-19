@@ -39,7 +39,7 @@ class _SearchScreenState extends State<SearchScreen> {
               padding: const EdgeInsets.only(left: 14),
               child: Text('Find your outfit that matches your weather.', style: TextStyle(
                   fontFamily: 'Lora',
-                  fontSize: 36.0,
+                  fontSize: 28.0,
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w400,
                 
@@ -50,7 +50,7 @@ class _SearchScreenState extends State<SearchScreen> {
               padding: const EdgeInsets.only(left: 14),
               child: Text('A little inspiration for whatever\'s outside.', style: TextStyle(
                   fontFamily: 'Plus Jakarta Sans',
-                  fontSize: 15.0,
+                  fontSize: 13.0,
                   letterSpacing: 2.0,
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w500,
@@ -76,10 +76,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
           Expanded(child: 
             Padding(
-              padding: const EdgeInsets.only(right: 14, left: 14),
+              padding: const EdgeInsets.all(10),
               child: GridView.count(
                 crossAxisCount: 2,
-                crossAxisSpacing: 12,
                 children: [
                   ClothCard(),
                   ClothCard(),
