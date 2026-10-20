@@ -75,7 +75,9 @@ class _SettingScreenState extends State<SettingScreen> {
                     color: AppColors.primary)
                     ),
               
-                SettingBarItem(icon: Icon(Icons.location_pin, color: AppColors.primary,), name: 'Location', action: SettingTextItem(name: 'London, UK')),
+                SettingBarItem(icon: Icon(Icons.location_pin, color: AppColors.primary,), name: 'Location', action: SettingTextItem(name: 'Karang Joang', onPressed: () {
+                    context.push('/find-location');
+                  },)),
 
                 SettingBarItem(icon: Icon(Icons.location_searching_sharp, color: AppColors.primary,), name: 'Use device location', action: SettingTextItem(name: 'ON')),  
                 

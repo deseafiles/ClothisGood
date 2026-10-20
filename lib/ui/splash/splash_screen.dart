@@ -1,5 +1,4 @@
 import 'package:android/utils/constant.dart';
-import 'package:android/ui/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:go_router/go_router.dart';

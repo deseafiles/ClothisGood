@@ -4,7 +4,6 @@ import 'package:android/domain/models/weathers/weather.dart';
 import 'package:android/data/repositories/weathers/weather_repository.dart';
 
 class WeatherRepositoryImpl implements WeatherRepository {
-  // final ApiService apiClient;
   final WeatherApiService weatherApiService;
 
   WeatherRepositoryImpl(this.weatherApiService);
