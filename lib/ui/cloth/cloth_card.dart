@@ -1,5 +1,7 @@
 import 'package:android/utils/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ClothCard extends StatefulWidget {
   const ClothCard({super.key});
@@ -7,6 +9,13 @@ class ClothCard extends StatefulWidget {
   @override
   State<ClothCard> createState() => _ClothCardState();
 }
+
+Future<void> goToWebPage(String urlString) async {
+    final Uri _url = Uri.parse(urlString);
+    if (!await launchUrl(_url)) {
+        throw 'Could not launch $_url';
+      }
+  }
 
 class _ClothCardState extends State<ClothCard> {
   @override
@@ -84,7 +93,9 @@ class _ClothCardState extends State<ClothCard> {
                           ),
                           child: IconButton(
                             padding: EdgeInsets.zero,
-                            onPressed: () {}, 
+                            onPressed: () {
+                                context.push('/cloth-detail');
+                              }, 
                             icon: Icon(Icons.arrow_outward, 
                               size: 12, 
                               color: AppColors.primary,

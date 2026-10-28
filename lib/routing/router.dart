@@ -1,8 +1,10 @@
+import 'package:android/ui/cloth/cloth_detail.dart';
 import 'package:android/ui/home/home_screen.dart';
 import 'package:android/ui/home/privacy_policy_screen.dart';
 import 'package:android/ui/home/search_screen.dart';
 import 'package:android/ui/home/setting_screen.dart';
 import 'package:android/ui/home/widgets/navigation_app_bar.dart';
+import 'package:android/ui/home/widgets/search_app_bar.dart';
 import 'package:android/ui/splash/splash_screen.dart';
 import 'package:android/ui/weather/location_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -30,6 +32,10 @@ final router = GoRouter(
               path: '/home', 
               builder: (context, state) => const HomeScreen(),
             ),
+            // GoRoute(
+            //   path: '/search', 
+            //   builder: (context, state) => const SearchScreen(),
+            // ),
           ],
         ),
         
@@ -38,6 +44,11 @@ final router = GoRouter(
             GoRoute(
               path: '/search', 
               builder: (context, state) => const SearchScreen(),
+            ),
+            
+            GoRoute(
+              path: '/search-outfit', 
+              builder: (context, state) => const SearchAppBar(),
             ),
           ],
         ),
@@ -51,6 +62,10 @@ final router = GoRouter(
           ],
         ),
       ],
+    ),
+    GoRoute(
+      path: '/cloth-detail', 
+      builder: (context, state) => const ClothDetail(),
     ),
     GoRoute(
       path: '/privacy-policy', 

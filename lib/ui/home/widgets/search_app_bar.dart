@@ -11,7 +11,7 @@ class SearchAppBar extends StatefulWidget {
 class _SearchAppBarState extends State<SearchAppBar> {
   @override
   Widget build(BuildContext context) {
-    return SearchAnchor(builder: (BuildContext context, SearchController controller) {
+    return SearchAnchor(isFullScreen: false, builder: (BuildContext context, SearchController controller) {
         return SearchBar(
           hintText: "Cari Outfit..." ,
           controller: controller,
@@ -29,7 +29,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
       },  
 
     suggestionsBuilder: (BuildContext context, SearchController controller) {
-        return List<ListTile>.generate(5, (int index) {
+        return List<ListTile>.generate(5 , (int index) {
             final String item = 'item $index';
             return ListTile(
               title: Text(item),

@@ -19,7 +19,7 @@ class _SettingScreenState extends State<SettingScreen> {
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+          // mainAxisSize: MainAxisSize.min,
           children: [
             Text('ClothisGood',
               style: TextStyle(
@@ -66,6 +66,7 @@ class _SettingScreenState extends State<SettingScreen> {
             child: 
               Column(
               spacing: 4,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text('Weather & location', style: 
                   TextStyle(
@@ -89,15 +90,21 @@ class _SettingScreenState extends State<SettingScreen> {
                     color: AppColors.primary)
                     ),
                 
-                SettingBarItem(icon: Icon(Icons.palette_rounded, color: AppColors.primary,), name: 'Appearence', action: SettingTextItem(name: 'Light')),  
-                
-                // SettingBarItem(icon: Icon(Icons.location_searching_sharp, color: AppColors.primary,), name: 'Language', action: SettingTextItem(name: 'Light')),  
                 
                 SettingBarItem(icon: Icon(Icons.privacy_tip_rounded, color: AppColors.primary,), name: 'Privacy & permissions', action: SettingTextItem(name: '', onPressed: () {
                     context.push('/privacy-policy');
                   },)),  
                
 
+              ]
+            )
+          ),
+
+          const Spacer(),
+
+          Padding(padding: EdgeInsets.fromLTRB(40, 0, 0, 20),
+          child: Column(
+            children: [
                 const Text('ClothisGood', style: 
                   TextStyle(
                     fontSize: 24,
@@ -112,9 +119,9 @@ class _SettingScreenState extends State<SettingScreen> {
                     fontFamily: 'Lora',
                     color: AppColors.textSecondary)
                     ),
-              ]
-            )
-          )
+
+            ],
+          ))
         ]
       )
     );

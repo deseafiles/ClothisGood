@@ -1,86 +1,95 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:android/utils/constant.dart';
 
-class NavigationAppBar  extends StatelessWidget {
-  const NavigationAppBar ({required this.shell, super.key});
+class NavigationAppBar extends StatefulWidget {
+  const NavigationAppBar({
+    required this.shell,
+    super.key,
+  });
+
   final StatefulNavigationShell shell;
 
   @override
+  State<NavigationAppBar> createState() => _NavigationAppBarState();
+}
+
+class _NavigationAppBarState extends State<NavigationAppBar> {
+  final List<int> _tabHistory = [0];
+
+  void _onTabSelected(int index) {
+    final currentIndex = widget.shell.currentIndex;
+
+    if (index == currentIndex) {
+      widget.shell.goBranch(
+        index,
+        initialLocation: true,
+      );
+      return;
+    }
+
+    _tabHistory.add(index);
+
+    widget.shell.goBranch(index);
+  }
+
+  void _onBack() {
+    if (_tabHistory.length > 1) {
+      setState(() {
+        _tabHistory.removeLast();
+      });
+
+      widget.shell.goBranch(_tabHistory.last);
+      return;
+    }
+
+    if (widget.shell.currentIndex != 0) {
+      setState(() {
+        _tabHistory
+          ..clear()
+          ..add(0);
+      });
+
+      widget.shell.goBranch(0);
+      return;
+    }
+
+    SystemNavigator.pop();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: shell,
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: AppColors.surface,
-        selectedIndex: shell.currentIndex,
-        onDestinationSelected: (index) {
-            shell.goBranch(
-              index,
-              initialLocation: index == shell.currentIndex, 
-            );
-          },
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          _onBack();
+        }
+      },
+      child: Scaffold(
+        body: widget.shell,
+        bottomNavigationBar: NavigationBar(
+          backgroundColor: AppColors.surface,
+          selectedIndex: widget.shell.currentIndex,
+          onDestinationSelected: _onTabSelected,
           destinations: const [
-            NavigationDestination(icon: Icon(Icons.home_rounded), label: 'Home'),
-            NavigationDestination(icon: Icon(Icons.explore_rounded), label: 'Explore'),
-            NavigationDestination(icon: Icon(Icons.settings_rounded), label: 'Settings'),
+            NavigationDestination(
+              icon: Icon(Icons.home_rounded),
+              label: 'Home',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.explore_rounded),
+              label: 'Explore',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.settings_rounded),
+              label: 'Settings',
+            ),
           ],
+        ),
       ),
     );
   }
 }
-
-// import 'package:android/utils/constant.dart';
-// import 'package:flutter/material.dart';
-// import 'package:go_router/go_router.dart';
-//
-// class NavigationAppBar extends StatefulWidget {
-//   const NavigationAppBar({super.key});
-//
-//   @override
-//   State<NavigationAppBar> createState() => _NavigationAppBarState();
-// }
-//
-// class _NavigationAppBarState extends State<NavigationAppBar> {
-//   int currentPageIndex = 0;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return NavigationBar(
-//       selectedIndex: currentPageIndex,
-//       indicatorColor: AppColors.primary,
-//       onDestinationSelected: (int index) {
-//         setState(() {
-//           currentPageIndex = index;
-//           }
-//         );
-//
-//         switch (index) {
-//           case 0:
-//             context.go('/');
-//             break;
-//           case 1:
-//             context.go('/search');
-//             break;
-//           case 2:
-//             context.go('/setting');
-//             break;
-//         }
-//       },
-//       destinations: const <NavigationDestination>[
-//         NavigationDestination(
-//           selectedIcon: Icon(Icons.home),
-//           icon: Icon(Icons.home_outlined),
-//           label: 'Home',
-//         ),
-//         NavigationDestination(
-//           icon: Icon(Icons.search),
-//           label: 'Search',
-//         ),
-//         NavigationDestination(
-//           icon: Icon(Icons.settings_outlined),
-//           label: 'Setting',
-//         ),
-//       ],
-//     );
-//   }
-// }

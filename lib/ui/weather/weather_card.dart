@@ -11,7 +11,7 @@ class WeatherCard extends StatefulWidget {
 class _WeatherCardState extends State<WeatherCard> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Container(
     child: Container(
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
