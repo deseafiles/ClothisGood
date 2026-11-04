@@ -4,10 +4,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ClothApiService {
  Future<Cloth> getCloth(String category) async {
-     final api = ApiService();
+     final api = ApiClient();
       String clientId = dotenv.env['UNSPLASH_ACCESS_KEY'] ?? '';
       
-      print(clientId);
      if (clientId.isEmpty) {
         throw Exception('UNSPLASH_ACCESS_KEY belum diatur');
       }

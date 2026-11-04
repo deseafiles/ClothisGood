@@ -21,65 +21,73 @@ class _SearchScreenState extends State<SearchScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('ClothisGood',
+            Text(
+              'ClothisGood',
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w500,
                 fontSize: 20,
                 letterSpacing: 3.0,
                 color: AppColors.primary,
-              ),)
+              ),
+            ),
           ],
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 10,
-        children: [
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 10,
+          children: [
             Padding(
               padding: const EdgeInsets.only(left: 14),
-              child: Text('Find your outfit that matches your weather.', style: TextStyle(
+              child: Text(
+                'Find your outfit that matches your weather.',
+                style: TextStyle(
                   fontFamily: 'Lora',
                   fontSize: 28.0,
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w400,
-                
-              ),)
+                ),
+              ),
             ),
 
             Padding(
               padding: const EdgeInsets.only(left: 14),
-              child: Text('A little inspiration for whatever\'s outside.', style: TextStyle(
+              child: Text(
+                'A little inspiration for whatever\'s outside.',
+                style: TextStyle(
                   fontFamily: 'Plus Jakarta Sans',
                   fontSize: 13.0,
                   letterSpacing: 2.0,
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w500,
-                
-              ),)
+                ),
+              ),
             ),
 
-
             Padding(
-              padding: const EdgeInsets.only(right: 14, left: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 14),
               child: SearchAppBar(),
             ),
 
             Padding(
-              padding: const EdgeInsets.only(right: 14, left: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 14),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Hasil Pencarian'),
-                  Text('1 looks')
-                ]),
+                  Text('1 looks'),
+                ],
               ),
+            ),
 
-          Expanded(child: 
             Padding(
               padding: const EdgeInsets.all(10),
               child: GridView.count(
                 crossAxisCount: 2,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   ClothCard(),
                   ClothCard(),
@@ -87,12 +95,13 @@ class _SearchScreenState extends State<SearchScreen> {
                   ClothCard(),
                   ClothCard(),
                   ClothCard(),
-                  ClothCard()
-                ],)
-            ) 
-          )
-        ],
-      )
+                  ClothCard(),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

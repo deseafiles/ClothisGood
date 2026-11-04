@@ -1,153 +1,97 @@
+import 'package:android/data/provider/outfit_provider.dart';
 import 'package:android/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ClothCard extends StatefulWidget {
+class ClothCard extends ConsumerStatefulWidget {
   const ClothCard({super.key});
 
   @override
-  State<ClothCard> createState() => _ClothCardState();
+  ConsumerState<ClothCard> createState() => _ClothCardState();
 }
 
-Future<void> goToWebPage(String urlString) async {
-    final Uri _url = Uri.parse(urlString);
-    if (!await launchUrl(_url)) {
-        throw 'Could not launch $_url';
-      }
-  }
+// Future<void> goToWebPage(String urlString) async {
+//     final Uri _url = Uri.parse(urlString);
+//     if (!await launchUrl(_url)) {
+//         throw 'Could not launch $_url';
+//       }
+//   }
 
-class _ClothCardState extends State<ClothCard> {
+class _ClothCardState extends ConsumerState<ClothCard> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
+    final dataCloth = ref.watch(getOutfitProvider);
+
+    return dataCloth.when(
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
       ),
-      color: AppColors.surface,
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRRect(
+      error: (error, stackTrace) => Center(
+        child: Text('Error: $error'),
+      ),
+      data: (outfit) {
+        return Card(
+          color: AppColors.surface,
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: GestureDetector(
+              onTap: () {
+                context.push('/cloth-detail');
+              },
+              child: ClipRRect(
                 borderRadius: BorderRadius.circular(14),
-                child: Stack(
-                  children: [
-                    Image.network(
-                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                      fit: BoxFit.fill,
-                    ),
-                    
-                    Positioned(
-                      top: 5,
-                      left: 5,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.pinkLight,
-                          borderRadius: BorderRadius.circular(6),
-                          ),
-                        child: Text('Nama Author', style: TextStyle(
-                          fontFamily: 'Lora',
-                          fontSize: 8,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary
-                        )),
+                child: AspectRatio(
+                  aspectRatio: 3 / 4,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.network(
+                        outfit.urls.small,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Center(
+                            child: Icon(Icons.broken_image),
+                          );
+                        },
                       ),
-                    ),
-                    
-                    Positioned(
-                      bottom: 5,
-                      left: 5,
-                      child: 
-                        const Text(
-                          'The effortless layer',
-                          style: TextStyle(
-                            fontFamily: 'Lora',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w300,
-                            color: AppColors.textWhite,
-                          ),
-                      ),
-                    ),
-                    
-                    Positioned(
-                      bottom: 4,
-                      right: 10,
-                      child: 
-                        Container(
-                          alignment: Alignment.center,
-                          constraints: BoxConstraints(
-                            maxWidth: 20,
-                            maxHeight: 20,
+
+                      Positioned(
+                        top: 5,
+                        left: 5,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
                           ),
                           decoration: BoxDecoration(
                             color: AppColors.pinkLight,
-                            borderRadius: BorderRadius.circular(90),
-                            
+                            borderRadius: BorderRadius.circular(6),
                           ),
-                          child: IconButton(
-                            padding: EdgeInsets.zero,
-                            onPressed: () {
-                                context.push('/cloth-detail');
-                              }, 
-                            icon: Icon(Icons.arrow_outward, 
-                              size: 12, 
-                              color: AppColors.primary,
-                              
-                               
+                          child: Text(
+                            outfit.user.username,
+                            style: TextStyle(
+                              fontFamily: 'Lora',
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textPrimary,
                             ),
-                          )
+                          ),
                         ),
-                    ),
-                  ],
-                )
+                      ),
+                    ],
+                  ),
+                ),
               ),
-
-              // const SizedBox(height: 12),
-
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Expanded(
-              //       child: 
-              // Text('The effortless layer', style: TextStyle(
-              //         fontFamily: 'Lora',
-              //         fontSize: 14,
-              //         fontWeight: FontWeight.w600,
-              //         color: AppColors.textPrimary
-              //       )),
-              //     ),
-              //
-              //     Container(
-              //       padding: const EdgeInsets.all(6),
-              //       decoration: BoxDecoration(
-              //         color: AppColors.primary.withOpacity(0.1),
-              //         shape: BoxShape.circle,
-              //       ),
-              //       child: Icon(Icons.arrow_outward, size: 16, color: AppColors.primary),
-              //     ),
-              //   ],
-              // ),
-              //
-              // const SizedBox(height: 6),
-              //
-              // Text('Light trench + cotton tee + straight jeans...', style: TextStyle(
-              //   color: AppColors.primary,
-              //   fontSize: 12,
-              //   height: 1.4,
-              //   fontFamily: 'Plus Jakarta Sans',
-              //   fontWeight: FontWeight.w500,
-              // ))
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

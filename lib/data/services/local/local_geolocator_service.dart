@@ -43,7 +43,7 @@ class GeolocatorService {
         ),
       );
   
-  static Future<String?> fromLatLongIntoLocation(double lat, double long) async {
+  Future<String?> fromLatLongIntoLocation(double lat, double long) async {
     final Geocoding geocoding = Geocoding(); 
     try {
       final placemarks = await geocoding.placemarkFromCoordinates(
