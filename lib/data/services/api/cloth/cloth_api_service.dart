@@ -18,4 +18,6 @@ class ClothApiService {
      print(data);
      return Cloth.fromJson(data);
    } 
+
+   //tambahin api untuk search image, batasin tapi khusus untuk outfit aja categorynya, terus buatin providernya, terus 
 }

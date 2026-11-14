@@ -113,7 +113,7 @@ class _ClothDetailState extends ConsumerState<ClothDetail> {
 
                       TextButton.icon(
                         onPressed: () {
-                          goToWebPage('${outfit.urls}');
+                          goToWebPage('${outfit.urls.raw}');
                         },
                         icon: Icon(
                           Icons.open_in_new,

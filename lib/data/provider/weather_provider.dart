@@ -38,3 +38,11 @@ final getLocationProvider = FutureProvider<String?>((ref) {
     return controller.getLocation();
   });
 
+final getWeatherCodeProvider = FutureProvider.family<String, Weather>(
+  (ref, weather) async {
+    final controller = ref.watch(weatherControllerProvider);
+
+    return controller.getWeatherCode(weather);
+  },
+);
+

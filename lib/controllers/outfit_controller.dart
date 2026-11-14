@@ -11,4 +11,10 @@ class OutfitController {
       //bisa nambahin bussiness logic di sini
       return cloth;
     }
+  
+  Future<Cloth> searchCloth(String category, String keyword) async {
+      final cloth = await repository.getCloth(category);
+      //bisa nambahin bussiness logic di sini
+      return cloth;
+    }
 }

@@ -98,12 +98,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisCount: 2,
                 children:const [
                   ClothCard(),
-                  ClothCard(),
-                  ClothCard(),
-                  ClothCard(),
-                  ClothCard(),
-                  ClothCard(),
-                  ClothCard()
+                  // ClothCard(),
+                  // ClothCard(),
+                  // ClothCard(),
+                  // ClothCard(),
+                  // ClothCard(),
+                  // ClothCard()
                 ],)
             ) 
         ],

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:flutter/services.dart';
+import 'package:android/config/assets.dart';
 import 'package:android/data/repositories/weathers/weather_repository.dart';
 import 'package:android/data/services/local/local_geolocator_service.dart';
 import 'package:android/domain/models/weathers/weather.dart';
@@ -26,4 +29,17 @@ class WeatherController {
     
     return changeLocation;
     }
+
+  Future<String> getWeatherCode(Weather weather) async {
+    final jsonFile = await rootBundle.loadString(Assets.weathers);
+    final weatherJson = jsonDecode(jsonFile) as List<dynamic>;
+
+    final code = weather.hourly.weatherCode[0];
+
+    final weatherData = weatherJson.firstWhere(
+      (item) => item['code'] == code,
+    );
+
+    return weatherData['description'];
+  }
 }

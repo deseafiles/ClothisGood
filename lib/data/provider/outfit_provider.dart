@@ -16,4 +16,11 @@ final getOutfitProvider = FutureProvider<Cloth>((ref) {
     return controller.getCloth(category);
   });
 
+final searchOutfitProvider = FutureProvider.family<Cloth, String>((ref, keyword) {
+  final controller = ref.watch(outfitRepositoryProvider);
+
+  final category = 'outfit $keyword';
+
+  return controller.getCloth(category);
+});
 
