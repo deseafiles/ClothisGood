@@ -2,6 +2,7 @@
 // import 'package:android/domain/models/weathers/selected_location.dart';
 import 'package:android/domain/models/weathers/weather.dart';
 import 'package:android/ui/cloth/cloth_card.dart';
+import 'package:android/ui/cloth/cloth_list_screen.dart';
 import 'package:android/ui/weather/weather_card.dart';
 import 'package:android/ui/weather/weather_icon.dart';
 import 'package:android/utils/constant.dart';
@@ -92,19 +93,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
             Padding(
               padding: const EdgeInsets.all(10),
-              child: GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 2,
-                children:const [
-                  ClothCard(),
-                  // ClothCard(),
-                  // ClothCard(),
-                  // ClothCard(),
-                  // ClothCard(),
-                  // ClothCard(),
-                  // ClothCard()
-                ],)
+              child: SizedBox(
+                height: 600,
+                child: ClothListScreen(),
+              )
             ) 
         ],
       ),

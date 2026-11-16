@@ -8,7 +8,6 @@ import 'package:android/domain/models/clothes/user.dart';
 
 class Cloth {
   String id;
-  // AlternativeSlug alternative_slugs;
   DateTime createdAt;
   DateTime updatedAt;
   DateTime? promotedAt;
@@ -23,7 +22,6 @@ class Cloth {
 
   Cloth({
     required this.id,
-    // required this.alternative_slugs,
     required this.createdAt,
     required this.updatedAt,
     this.promotedAt,
@@ -37,21 +35,45 @@ class Cloth {
     required this.user,
   });
 
-  factory Cloth.fromJson(Map<String, dynamic> json) => Cloth(
-        id: json['id'] as String,
-        // alternative_slugs: AlternativeSlug.fromJson(json['alternative_slugs']),
-        createdAt: DateTime.parse(json['created_at']),
-        updatedAt: DateTime.parse(json['updated_at']),
-        promotedAt: json['promoted_at'] != null
-            ? DateTime.parse(json['promoted_at'])
-            : null,
-        width: json['width'] as int,
-        height: json['height'] as int,
-        color: json['color'] as String,
-        urls: Url.fromJson(json['urls']),
-        slug: json['slug'] as String,
-        altDescription: json['alt_description'] as String?,
-        shortDescription: json['short_description'] as String?,
-        user: User.fromJson(json['user']),
-      );
+  factory Cloth.fromJson(Map<String, dynamic> json) {
+    return Cloth(
+      id: json['id'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
+      promotedAt: json['promoted_at'] != null
+          ? DateTime.parse(json['promoted_at'] as String)
+          : null,
+      width: json['width'] as int,
+      height: json['height'] as int,
+      color: json['color'] as String,
+      urls: Url.fromJson(json['urls'] as Map<String, dynamic>),
+      slug: json['slug'] as String,
+      altDescription: json['alt_description'] as String?,
+      shortDescription: json['description'] as String?,
+      user: User.fromJson(json['user'] as Map<String, dynamic>),
+    );
+  }
+
+  static List<Cloth> parseList(dynamic list) {
+      return (list as List<dynamic>)
+        .map((item) => Cloth.fromJson(item as Map<String, dynamic>))
+        .toList();
+    }
+  // factory Cloth.fromJson(Map<String, dynamic> json) => Cloth(
+  //       id: json['id'] as String,
+  //       // alternative_slugs: AlternativeSlug.fromJson(json['alternative_slugs']),
+  //       createdAt: DateTime.parse(json['created_at']),
+  //       updatedAt: DateTime.parse(json['updated_at']),
+  //       promotedAt: json['promoted_at'] != null
+  //           ? DateTime.parse(json['promoted_at'])
+  //           : null,
+  //       width: json['width'] as int,
+  //       height: json['height'] as int,
+  //       color: json['color'] as String,
+  //       urls: Url.fromJson(json['urls']),
+  //       slug: json['slug'] as String,
+  //       altDescription: json['alt_description'] as String?,
+  //       shortDescription: json['short_description'] as String?,
+  //       user: User.fromJson(json['user']),
+  //     );
 }

@@ -32,14 +32,10 @@ class WeatherController {
 
   Future<String> getWeatherCode(Weather weather) async {
     final jsonFile = await rootBundle.loadString(Assets.weathers);
-    final weatherJson = jsonDecode(jsonFile) as List<dynamic>;
+    final weatherJson = jsonDecode(jsonFile) as Map<String, dynamic>;
 
     final code = weather.hourly.weatherCode[0];
 
-    final weatherData = weatherJson.firstWhere(
-      (item) => item['code'] == code,
-    );
-
-    return weatherData['description'];
+    return weatherJson[code.toString()] ?? 'Unknown weather';
   }
 }

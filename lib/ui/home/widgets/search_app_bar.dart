@@ -1,5 +1,6 @@
 import 'package:android/data/provider/outfit_provider.dart';
 import 'package:android/ui/cloth/cloth_card.dart';
+import 'package:android/ui/cloth/cloth_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,7 +64,7 @@ class _SearchAppBarState extends ConsumerState<SearchAppBar> {
           ],
           data: (cloth) {
             return [
-              ClothCard()
+              ClothListScreen()
             ];
           },
         );
