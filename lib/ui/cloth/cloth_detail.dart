@@ -5,7 +5,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ClothDetail extends ConsumerStatefulWidget {
-  const ClothDetail({super.key});
+  final String id;
+
+  const ClothDetail({super.key, required this.id});
 
   @override
   ConsumerState<ClothDetail> createState() => _ClothDetailState();
@@ -22,8 +24,9 @@ Future<void> goToWebPage(String urlString) async {
 class _ClothDetailState extends ConsumerState<ClothDetail> {
   @override
   Widget build(BuildContext context) {
-    final dataCloth = ref.watch(getOutfitProvider);
-
+    // final dataCloth = ref.watch(getOutfitProvider(widget.id));
+    final dataCloth = ref.watch(getOutfitByIdProvider(widget.id));
+    
     return dataCloth.when(
       loading: () => const Scaffold(
         body: Center(
@@ -74,7 +77,7 @@ class _ClothDetailState extends ConsumerState<ClothDetail> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                           '${outfit.altDescription}',
+                           '${outfit.altDescription} - ${outfit.id}',
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: 'Lora',

@@ -46,4 +46,19 @@ return ClothPage.fromJson(data);
 
     return Cloth.fromJson(data);
   }
+  
+  Future<Cloth> getClothById(String id) async {
+      final api = ApiClient();
+      final clientId = dotenv.env['UNSPLASH_ACCESS_KEY'] ?? '';
+
+      if (clientId.isEmpty) {
+        throw Exception('UNSPLASH_ACCESS_KEY belum diatur');
+      }
+
+      final data = await api.get(
+        'api.unsplash.com/photos/$id?client_id=$clientId',
+      );
+
+      return Cloth.fromJson(data);
+    }
 }

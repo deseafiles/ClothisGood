@@ -22,4 +22,10 @@ class OutfitRepositoryImpl implements OutfitRepository {
 
     return response;
   }
+
+  @override
+  Future<Cloth> getClothById(String id) async {
+      final response = await apiService.getClothById(id);
+      return response;
+    }
 }

@@ -7,6 +7,7 @@ import 'package:android/ui/home/widgets/navigation_app_bar.dart';
 import 'package:android/ui/home/widgets/search_app_bar.dart';
 import 'package:android/ui/splash/splash_screen.dart';
 import 'package:android/ui/weather/location_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
 //menggunakan shellroute karena setiap kali pindah halaman(misal dari home ke settings) flutter akan menghapus seluruh tampilan di layar dan menggambar ulang dari 0, sedangkan dengan shellroute menu dibungkus dalam shell. Jadi saat berpindah halaman hanya body tengah saja yang diganti.
@@ -64,9 +65,17 @@ final router = GoRouter(
       ],
     ),
     GoRoute(
-      path: '/cloth-detail', 
-      builder: (context, state) => const ClothDetail(),
+      path: '/cloth-detail/:id', 
+      builder: (BuildContext context, GoRouterState state) {
+          final id = state.pathParameters['id']!;
+          return ClothDetail(id: id);
+        }
+
     ),
+    // GoRoute(
+    //   path: '/cloth-detail', 
+    //   builder: (context, state) => const ClothDetail(),
+    // ),
     GoRoute(
       path: '/privacy-policy', 
       builder: (context, state) => const PrivacyPolicyScreen(),
@@ -79,21 +88,3 @@ final router = GoRouter(
   ], 
 );
 
-// final GoRouter router = GoRouter(
-//   routes: <RouteBase>[
-//     GoRoute(
-//       path: '/',
-//       builder: (context, state) => HomeScreen(),
-//     ),
-//
-//     GoRoute(
-//       path: '/search',
-//       builder: (context, state) => SearchScreen(),
-//     ),
-//     //
-//     GoRoute(
-//       path: '/setting',
-//       builder: (context, state) => SettingScreen(),
-//     ),
-//   ],
-// );

@@ -23,7 +23,8 @@ class ClothCard extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         child: GestureDetector(
           onTap: () {
-            context.push('/cloth-detail');
+            context.push('/cloth-detail/${cloth.id}');
+            print('cloth-id: ${cloth.id}');
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(14),
