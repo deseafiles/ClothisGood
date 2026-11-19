@@ -1,137 +1,96 @@
-import 'package:android/data/services/api/api_client.dart';
-import 'package:android/domain/models/weathers/selected_location.dart';
-import 'package:android/domain/models/weathers/weather.dart';
-import 'package:android/ui/home/widgets/navigation_app_bar.dart';
-import 'package:android/ui/home/widgets/weather_card.dart';
-import 'package:android/ui/home/widgets/weather_icon.dart';
+// import 'package:android/data/services/api/api_client.dart';
+// import 'package:android/domain/models/weathers/selected_location.dart';
+import 'package:android/domain/models/weathers/weather_location_selected.dart';
+import 'package:android/ui/cloth/cloth_list_screen.dart';
+import 'package:android/ui/weather/change_weather.dart';
+import 'package:android/ui/weather/weather_card.dart';
 import 'package:android/utils/constant.dart';
-import 'package:android/utils/result.dart';
 import 'package:flutter/material.dart';
 
+
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final WeatherLocationSelected? selectedWeatherLocation;
+
+  const HomeScreen({
+    super.key,
+    this.selectedWeatherLocation,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  SelectedLocation? _selected;
-  Future<Result<Weather>>? _weatherFuture;
-
-  void _onLocationChanged(SelectedLocation location) {
-    if (!mounted) return;
-
-    setState(() {
-      _selected = location;
-      _weatherFuture = ApiClient().getWeather(
-        location.latitude,
-        location.longitude,
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      // bottomNavigationBar: const NavigationAppBar(),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Column(
+        backgroundColor: AppColors.background,
+        forceMaterialTransparency: true,
+        title: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            'ClothisGood',
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
+              letterSpacing: 3.0,
+              color: AppColors.primary,
+            ),
+          ),
+        ),
+      ),
+
+      body: SingleChildScrollView(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              'ClothisGood',
-              style: TextStyle(
-                fontFamily: 'Plus Jakarta Sans',
-                fontWeight: FontWeight.w700,
-                fontSize: 20,
-                letterSpacing: 1.5,
-                color: AppColors.primary,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  'Good weather. Better outfits.',
+                  style: TextStyle(
+                    fontFamily: 'Lora',
+                    fontSize: 28,
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
               ),
             ),
-            Text(
-              "Let's find your style!",
-              style: TextStyle(
-                fontFamily: 'Plus Jakarta Sans',
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.italic,
-                color: AppColors.textSecondary,
+
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: WeatherCard(),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 14),
+              child: Text(
+                'Your outfit for today',
+                style: TextStyle(
+                  fontFamily: 'Lora',
+                  fontWeight: FontWeight.w200,
+                  color: AppColors.textPrimary,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: SizedBox(
+                height: 600,
+                child: ClothListScreen(),
               ),
             ),
           ],
         ),
-        actions: [
-          WeatherIcon(locationName: _selected?.name),
-        ],
       ),
-      body: Column(
-        children: [
-          Expanded(child: _buildWeatherBody()),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: WeatherCard(onLocationChanged: _onLocationChanged),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildWeatherBody() {
-    final future = _weatherFuture;
-
-    // Dropdown belum selesai memuat lokasi pertama.
-    if (future == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    return FutureBuilder<Result<Weather>>(
-      future: future,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        }
-
-        final result = snapshot.data;
-        if (result == null) {
-          return const Center(child: Text('No Weather found'));
-        }
-
-        if (result is Ok<Weather>) {
-          final weather = result.value;
-          final temps = weather.temperature2m;
-
-          if (temps.length <= 2) {
-            return const Center(child: Text('No Weather found'));
-          }
-
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Card(
-              elevation: 4,
-              child: ListTile(
-                title: Text('${temps[2]}°C'),
-                subtitle: _selected == null
-                    ? null
-                    : Text('${_selected!.name}, ${_selected!.district}'),
-              ),
-            ),
-          );
-        }
-
-        if (result is Error<Weather>) {
-          return Center(child: Text('Error: ${result.error}'));
-        }
-
-        // Fallback supaya selalu ada return.
-        return const Center(child: Text('No Weather found'));
-      },
     );
   }
 }

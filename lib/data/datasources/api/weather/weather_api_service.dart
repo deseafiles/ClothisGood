@@ -1,0 +1,24 @@
+import 'package:android/data/datasources/api/api_client.dart';
+import 'package:android/domain/models/weathers/weather.dart';
+
+class WeatherApiService {
+  // static const baseUrl = 'api.open-meteo.com/v1';
+  
+  Future<Weather> getWeather(double lat, double long) async {
+    final api = ApiClient();
+
+    final Map<String, dynamic> data = await api.get(
+      'api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$long'
+      '&daily=temperature_2m_max,temperature_2m_min'
+      '&hourly=temperature_2m,uv_index,apparent_temperature,'
+      'precipitation_probability,relative_humidity_2m,'
+      'wind_speed_10m,weather_code,'
+      '&timezone=Asia%2FMakassar,'
+    );
+
+    print(data);
+    return Weather.fromJson(data);
+  
+    
+  }
+}

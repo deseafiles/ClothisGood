@@ -1,7 +1,15 @@
+import 'package:android/domain/models/weathers/weather_location_selected.dart';
+import 'package:android/ui/cloth/cloth_detail.dart';
 import 'package:android/ui/home/home_screen.dart';
+import 'package:android/ui/home/privacy_policy_screen.dart';
 import 'package:android/ui/home/search_screen.dart';
 import 'package:android/ui/home/setting_screen.dart';
 import 'package:android/ui/home/widgets/navigation_app_bar.dart';
+import 'package:android/ui/home/widgets/search_app_bar.dart';
+import 'package:android/ui/splash/splash_screen.dart';
+import 'package:android/ui/weather/change_weather.dart';
+import 'package:android/ui/weather/location_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
 //menggunakan shellroute karena setiap kali pindah halaman(misal dari home ke settings) flutter akan menghapus seluruh tampilan di layar dan menggambar ulang dari 0, sedangkan dengan shellroute menu dibungkus dalam shell. Jadi saat berpindah halaman hanya body tengah saja yang diganti.
@@ -12,8 +20,12 @@ import 'package:go_router/go_router.dart';
 
 // GoRouter configuration
 final router = GoRouter(
-  initialLocation: '/home',
+  initialLocation: '/',
   routes: [ 
+    GoRoute(
+      path: '/', 
+      builder: (context, state) => const SplashScreen(),
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, shell) => NavigationAppBar(shell: shell),
       branches: [
@@ -23,6 +35,10 @@ final router = GoRouter(
               path: '/home', 
               builder: (context, state) => const HomeScreen(),
             ),
+            // GoRoute(
+            //   path: '/search', 
+            //   builder: (context, state) => const SearchScreen(),
+            // ),
           ],
         ),
         
@@ -31,6 +47,11 @@ final router = GoRouter(
             GoRoute(
               path: '/search', 
               builder: (context, state) => const SearchScreen(),
+            ),
+            
+            GoRoute(
+              path: '/search-outfit', 
+              builder: (context, state) => const SearchAppBar(),
             ),
           ],
         ),
@@ -45,24 +66,33 @@ final router = GoRouter(
         ),
       ],
     ),
+    GoRoute(
+      path: '/cloth-detail/:id', 
+      builder: (BuildContext context, GoRouterState state) {
+          final id = state.pathParameters['id']!;
+          return ClothDetail(id: id);
+        }
+
+    ),
+    // GoRoute(
+    //   path: '/cloth-detail', 
+    //   builder: (context, state) => const ClothDetail(),
+    // ),
+    GoRoute(
+      path: '/privacy-policy', 
+      builder: (context, state) => const PrivacyPolicyScreen(),
+    ),
+    GoRoute(
+      path: '/find-location',
+      builder: (context, state) {
+        final selection = state.extra as WeatherLocationSelected?;
+
+        return ChangeWeather(
+          initialSelection: selection,
+        );
+      },
+    ),
+
   ], 
 );
 
-// final GoRouter router = GoRouter(
-//   routes: <RouteBase>[
-//     GoRoute(
-//       path: '/',
-//       builder: (context, state) => HomeScreen(),
-//     ),
-//
-//     GoRoute(
-//       path: '/search',
-//       builder: (context, state) => SearchScreen(),
-//     ),
-//     //
-//     GoRoute(
-//       path: '/setting',
-//       builder: (context, state) => SettingScreen(),
-//     ),
-//   ],
-// );
