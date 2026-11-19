@@ -1,5 +1,5 @@
-import 'package:android/ui/cloth/cloth_card.dart';
 import 'package:android/ui/cloth/cloth_list_screen.dart';
+import 'package:android/ui/cloth/cloth_search_list.dart';
 import 'package:android/ui/home/widgets/search_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:android/utils/constant.dart';
@@ -87,7 +87,7 @@ class _SearchScreenState extends State<SearchScreen> {
               padding: const EdgeInsets.all(10),
               child: SizedBox(
                 height: 600,
-                child: ClothListScreen(),
+                child: ClothSearchList(),
               )
             ) 
           ],

@@ -3,6 +3,7 @@
 //ambil raw image di urls -> regular
 //ambil user -> username
 
+import 'package:android/domain/models/clothes/link.dart';
 import 'package:android/domain/models/clothes/url.dart';
 import 'package:android/domain/models/clothes/user.dart';
 
@@ -19,6 +20,7 @@ class Cloth {
   String? altDescription;
   String? shortDescription;
   User user;
+  Link link;
 
   Cloth({
     required this.id,
@@ -33,6 +35,7 @@ class Cloth {
     this.altDescription,
     this.shortDescription,
     required this.user,
+    required this.link,
   });
 
   factory Cloth.fromJson(Map<String, dynamic> json) {
@@ -51,6 +54,7 @@ class Cloth {
       altDescription: json['alt_description'] as String?,
       shortDescription: json['description'] as String?,
       user: User.fromJson(json['user'] as Map<String, dynamic>),
+      link: Link.fromJson(json['links'] as Map<String, dynamic>),
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:android/domain/models/weathers/weather_location_selected.dart';
 import 'package:android/ui/cloth/cloth_detail.dart';
 import 'package:android/ui/home/home_screen.dart';
 import 'package:android/ui/home/privacy_policy_screen.dart';
@@ -6,6 +7,7 @@ import 'package:android/ui/home/setting_screen.dart';
 import 'package:android/ui/home/widgets/navigation_app_bar.dart';
 import 'package:android/ui/home/widgets/search_app_bar.dart';
 import 'package:android/ui/splash/splash_screen.dart';
+import 'package:android/ui/weather/change_weather.dart';
 import 'package:android/ui/weather/location_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
@@ -81,8 +83,14 @@ final router = GoRouter(
       builder: (context, state) => const PrivacyPolicyScreen(),
     ),
     GoRoute(
-      path: '/find-location', 
-      builder: (context, state) => const LocationScreen(),
+      path: '/find-location',
+      builder: (context, state) {
+        final selection = state.extra as WeatherLocationSelected?;
+
+        return ChangeWeather(
+          initialSelection: selection,
+        );
+      },
     ),
 
   ], 

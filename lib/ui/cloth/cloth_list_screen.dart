@@ -1,6 +1,5 @@
-import 'package:android/data/provider/outfit_provider.dart';
-import 'package:android/domain/models/clothes/cloth.dart';
 import 'package:android/ui/cloth/cloth_card.dart';
+import 'package:android/ui/provider/outfit_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,7 +9,7 @@ class ClothListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final clothCount = ref.watch(clothCountProvider);
+    final clothCount = ref.watch(clothGetPaginateProvider);
 
     return clothCount.when(
       loading: () => const Center(
@@ -30,7 +29,7 @@ class ClothListScreen extends ConsumerWidget {
           ),
           itemBuilder: (context, index) {
             final currentClothFromIndex = ref.watch(
-              getClothPaginateProvider(index ~/ 10 + 1),
+              getOutfitWithWeatherProvider(index ~/ 10 + 1),
             );
 
             return currentClothFromIndex.when(

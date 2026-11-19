@@ -1,0 +1,89 @@
+import 'package:flutter/material.dart';
+import 'package:android/utils/constant.dart';
+
+class SettingBarItem extends StatelessWidget {
+  final Icon icon;
+  final String name;
+  final Widget action;
+
+  const SettingBarItem({
+    super.key,
+    required this.icon,
+    required this.name,
+    required this.action,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8,
+          vertical: 16,
+        ),
+        child: Row(
+          spacing: 8,
+          children: [
+            icon,
+            Expanded(
+              child: Text(
+                name,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'Inter',
+                  color: AppColors.textPrimary,
+                ),
+              ),
+            ),
+            action,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Setting item berupa teks dengan tombol navigasi.
+class SettingTextItem extends StatelessWidget {
+  final String name;
+  final VoidCallback? onPressed;
+  final IconData icon;
+
+  const SettingTextItem({
+    super.key,
+    required this.name,
+    this.onPressed,
+    this.icon = Icons.arrow_right,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onPressed,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 8,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                name,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'Inter',
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ),
+            Icon(
+              icon,
+              size: 30,
+              color: AppColors.primary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

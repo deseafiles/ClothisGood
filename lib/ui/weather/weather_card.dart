@@ -1,32 +1,45 @@
-import 'package:android/data/provider/weather_provider.dart';
+import 'package:android/domain/models/weathers/weather_location_selected.dart';
+import 'package:android/ui/provider/weather_riverpod.dart';
 import 'package:android/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //consumer widget digunakna oleh stateless widget, sedangkan consumerstatefulwidget digunakan oleh statefulwidhet
 
-class WeatherCard extends ConsumerStatefulWidget {
+class WeatherCard extends ConsumerWidget {
   const WeatherCard({super.key});
 
   @override
-  ConsumerState<WeatherCard> createState() => _WeatherCardState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Membaca lokasi yang terakhir disimpan dari SettingScreen.
+    final selection = ref.watch(selectedWeatherLocationProvider);
 
-class _WeatherCardState extends ConsumerState<WeatherCard> {
-  @override
-  Widget build(BuildContext context) {
-    final dataWeather = ref.watch(getWeatherProvider);
-    final dataLocation = ref.watch(getLocationProvider);
+    final useCurrentLocation =
+        selection?.useCurrentLocation ?? true;
+
+    final selectedLocation = selection?.location;
+
+    // Memilih sumber data cuaca.
+    final dataWeather = useCurrentLocation
+        ? ref.watch(getLangLongProvider)
+        : ref.watch(
+            getWeatherFromLocationProvider(selectedLocation!),
+          );
+
+    // Memilih sumber nama lokasi.
+    final dataLocation = useCurrentLocation
+        ? ref.watch(getLocationProvider)
+        : ref.watch(
+            getLocationFromJsonProvider(selectedLocation!),
+          );
 
     return dataWeather.when(
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
-
       error: (error, stackTrace) => Center(
         child: Text('Error : $error'),
       ),
-
       data: (weather) {
         final location = dataLocation.when(
           data: (location) => location ?? 'Unknown location',
@@ -34,27 +47,27 @@ class _WeatherCardState extends ConsumerState<WeatherCard> {
           error: (error, stack) => 'Location unavailable',
         );
 
-        final weatherCode = ref.watch(getWeatherCodeProvider(weather));
+        final weatherCode = ref.watch(
+          getWeatherCodeProvider(weather),
+        );
 
         return weatherCode.when(
           loading: () => const Center(
             child: CircularProgressIndicator(),
           ),
-
           error: (error, stackTrace) => Center(
             child: Text('Error $error'),
           ),
-
           data: (code) {
             return Container(
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: AppColors.pinkLight,
                 borderRadius: BorderRadius.circular(18),
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.pinkLight,
-                  )
+                  ),
                 ],
               ),
               child: Column(
@@ -70,17 +83,16 @@ class _WeatherCardState extends ConsumerState<WeatherCard> {
                           ),
                           Text(
                             location,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: AppColors.textPrimary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ],
                       ),
-
                       Text(
-                        'UV Index ${weather.hourly.uvIndex[0]}',
-                        style: TextStyle(
+                        'UV Index ${weather.uvIndex}',
+                        style: const TextStyle(
                           color: AppColors.textSecondary,
                           fontWeight: FontWeight.w300,
                         ),
@@ -96,25 +108,24 @@ class _WeatherCardState extends ConsumerState<WeatherCard> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            '${weather.hourly.temperature2m[0].round()}°',
-                            style: TextStyle(
+                            '${weather.temperature}°',
+                            style: const TextStyle(
                               fontSize: 50,
                               color: AppColors.textPrimary,
                             ),
                           ),
-
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 code,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: AppColors.textPrimary,
                                 ),
                               ),
                               Text(
-                                'Feels like ${weather.hourly.apparentTemperature[0]}°. H ${weather.daily.temperature2mMax[0]} / L ${weather.daily.temperature2mMin[0]}',
-                                style: TextStyle(
+                                'Feels like ${weather.apparentTemperature}°. H ${weather.temperatureMax} / L ${weather.temperatureMin}',
+                                style: const TextStyle(
                                   color: AppColors.textSecondary,
                                 ),
                               ),
@@ -122,8 +133,7 @@ class _WeatherCardState extends ConsumerState<WeatherCard> {
                           ),
                         ],
                       ),
-
-                      Icon(
+                      const Icon(
                         Icons.cloud_rounded,
                         size: 50,
                         color: AppColors.primary,
@@ -136,13 +146,13 @@ class _WeatherCardState extends ConsumerState<WeatherCard> {
                     children: [
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.water_drop_rounded,
                             color: AppColors.primary,
                           ),
                           Text(
-                            'Rain ${weather.hourly.precipitationProbability[0]}%',
-                            style: TextStyle(
+                            'Rain ${weather.precipitationProbability}%',
+                            style: const TextStyle(
                               color: AppColors.textPrimary,
                               fontFamily: 'Inter',
                               fontSize: 14,
@@ -150,17 +160,16 @@ class _WeatherCardState extends ConsumerState<WeatherCard> {
                           ),
                         ],
                       ),
-
                       Row(
                         spacing: 4,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.water_rounded,
                             color: AppColors.primary,
                           ),
                           Text(
-                            'Humidity ${weather.hourly.relativeHumidity2m[0]}%',
-                            style: TextStyle(
+                            'Humidity ${weather.relativeHumidity}%',
+                            style: const TextStyle(
                               color: AppColors.textPrimary,
                               fontFamily: 'Inter',
                               fontSize: 14,
@@ -168,16 +177,15 @@ class _WeatherCardState extends ConsumerState<WeatherCard> {
                           ),
                         ],
                       ),
-
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.air_rounded,
                             color: AppColors.primary,
                           ),
                           Text(
-                            'Wind ${weather.hourly.windSpeed10m[0]} km/h',
-                            style: TextStyle(
+                            'Wind ${weather.windSpeed} km/h',
+                            style: const TextStyle(
                               color: AppColors.textPrimary,
                               fontFamily: 'Inter',
                               fontSize: 14,

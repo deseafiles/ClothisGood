@@ -1,5 +1,5 @@
+import 'package:android/data/datasources/api/api_client.dart';
 import 'package:android/domain/models/weathers/weather.dart';
-import 'package:android/data/services/api/api_client.dart';
 
 class WeatherApiService {
   // static const baseUrl = 'api.open-meteo.com/v1';

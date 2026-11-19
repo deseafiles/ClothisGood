@@ -1,4 +1,4 @@
-import 'package:android/data/provider/outfit_provider.dart';
+import 'package:android/ui/provider/outfit_riverpod.dart';
 import 'package:android/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -77,7 +77,7 @@ class _ClothDetailState extends ConsumerState<ClothDetail> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                           '${outfit.altDescription} - ${outfit.id}',
+                           '${outfit.altDescription}',
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: 'Lora',
@@ -116,7 +116,7 @@ class _ClothDetailState extends ConsumerState<ClothDetail> {
 
                       TextButton.icon(
                         onPressed: () {
-                          goToWebPage('${outfit.urls.raw}');
+                          goToWebPage('${outfit.link.html}');
                         },
                         icon: Icon(
                           Icons.open_in_new,

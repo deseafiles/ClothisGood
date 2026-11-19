@@ -1,8 +1,6 @@
-import 'package:android/data/provider/outfit_provider.dart';
-import 'package:android/ui/cloth/cloth_card.dart';
 import 'package:android/ui/cloth/cloth_list_screen.dart';
+import 'package:android/ui/provider/outfit_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchAppBar extends ConsumerStatefulWidget {
@@ -13,62 +11,35 @@ class SearchAppBar extends ConsumerStatefulWidget {
 }
 
 class _SearchAppBarState extends ConsumerState<SearchAppBar> {
+  final TextEditingController controller = TextEditingController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  void searchOutfit() {
+    final keyword = controller.text.trim();
+
+    if (keyword.isEmpty) return;
+
+    ref.read(searchKeywordProvider.notifier).state = keyword;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SearchAnchor(
-      isFullScreen: false,
-      builder: (BuildContext context, SearchController controller) {
-        return SearchBar(
-          hintText: 'Search Outfit...',
-          controller: controller,
-          padding: const WidgetStatePropertyAll<EdgeInsets>(
-            EdgeInsets.symmetric(horizontal: 16),
-          ),
-          onTap: () {
-            controller.openView();
-          },
-          onChanged: (_) {
-            controller.openView();
-          },
-          leading: const Icon(Icons.search),
-        );
-      },
-      suggestionsBuilder: (
-        BuildContext context,
-        SearchController controller,
-      ) {
-        final keyword = controller.text.trim();
-
-        if (keyword.isEmpty) {
-          return [
-            const ListTile(
-              title: Text('Search your favorite outfit'),
-            ),
-          ];
-        }
-
-        final clothAsync = ref.watch(
-          searchOutfitProvider(keyword),
-        );
-
-        return clothAsync.when(
-          loading: () => [
-            const Center(
-              child: CircularProgressIndicator(),
-            ),
-          ],
-          error: (error, stackTrace) => [
-            ListTile(
-              title: Text('Error: $error'),
-            ),
-          ],
-          data: (cloth) {
-            return [
-              ClothListScreen()
-            ];
-          },
-        );
-      },
+    return SearchBar(
+      controller: controller,
+      hintText: 'Search Outfit...',
+      leading: const Icon(Icons.search),
+      trailing: [
+        IconButton(
+          icon: const Icon(Icons.arrow_forward),
+          onPressed: searchOutfit,
+        ),
+      ],
+      onSubmitted: (_) => searchOutfit(),
     );
   }
 }
